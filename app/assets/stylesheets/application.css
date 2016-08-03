@@ -1,0 +1,109 @@
+/*
+ * This is a manifest file that'll be compiled into application.css, which will include all the files
+ * listed below.
+ *
+ * Any CSS and SCSS file within this directory, lib/assets/stylesheets, vendor/assets/stylesheets,
+ * or any plugin's vendor/assets/stylesheets directory can be referenced here using a relative path.
+ *
+ * You're free to add application-wide styles to this file and they'll appear at the bottom of the
+ * compiled file so the styles you add here take precedence over styles defined in any styles
+ * defined in the other CSS/SCSS files in this directory. It is generally better to create a new
+ * file per style scope.
+ *
+ *= require_tree .
+ *= require_self
+ */
+
+input[type=number].cedula::-webkit-outer-spin-button,
+
+input[type=number].cedula::-webkit-inner-spin-button {
+
+    -webkit-appearance: none;
+
+    margin: 0;
+
+}
+
+@media (max-width: 800px) {
+  .container-table{
+    top:80px; 
+    bottom:20px; 
+    max-height:100px;
+    overflow-y:auto;
+  }
+  section.content {
+    padding: 0!important;
+  }
+}
+@media (min-width: 800px) {
+  #modal-bill > div {width:80%;}
+}
+
+tr.link{
+	cursor: pointer!important;
+}
+tr.link:hover{
+	background:rgb(60, 141, 188)!important; 
+	color: white!important;
+}
+
+a.btn{
+	color:white!important;
+}
+
+
+select.select2,.select2-container {
+	width: 	100%!important;
+}
+.field_with_errors {
+	padding: 0px;
+    background: transparent;
+    display: initial;
+}
+.field_with_errors label {
+
+}
+
+.field_with_errors input {
+border: solid 1px red
+}
+.cantidad {
+width: 15%!important;
+}
+.precio {
+width: 20%!important;
+}
+
+.edit-sale, .ok-edit-sale,.delete-sale{
+  cursor: pointer
+}
+
+.edit-sale, .ok-edit-sale{
+  width: 20%!important;
+  float: right!important;
+}
+.new-cantidad{
+  height: 25px!important;
+}
+.new-cantidad,.current-cantidad{
+  width: 80%!important;
+  float: left!important;
+}
+
+.delete-sale{
+  color: red;
+}
+#add_sale{
+  color:green;
+}
+.delete-tr{
+  background: rgba(169, 68, 66, 0.49);
+}
+
+  .container-table{
+    top:80px; 
+    bottom:20px; 
+    max-height:400px;
+    overflow-y:auto;
+  }
+

@@ -1,0 +1,132 @@
+<h2>Registra el usuario Administrador</h2>
+<%= form_for(setup_user(@user),url: {action: "create_admin_user"}  ) do |f| %>
+
+
+  <script type="text/javascript">
+   var errorsArray=[] ;
+  <% @user.errors.each do |atributo, mensaje| %>
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
+  <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
+</script>
+  <%if !@user.persisted?%>
+  <div class="row">
+    <div class="col-xs-12 col-sm-8 col-md-8 col-lg-8">
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Datos Personales</h3>
+        </div><!-- /.box-header -->
+
+        <div class="box-body">
+          
+          <%= f.fields_for :profile do |field| %>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <%= f.label :email, "Email"%>*<br>
+                  <%= f.text_field :email,class:"form-control"  %>
+                 </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <%= field.label :sex, "Sexo" %>*<br>
+                  <%= field.radio_button :sex,'true', :checked => true %>
+                  Masculino              
+                  <%= field.radio_button :sex,'false', :checked => false %>
+                  Femenino
+                </div>
+              </div>        
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <%= field.label :name, "Nombres" %>*<br>
+                  <%= field.text_field :name,class:"form-control" %>
+                </div>
+              </div>
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <div class="form-group">
+                    <%= field.label :last_name, "Apellidos" %><br>
+                    <%= field.text_field :last_name,class:"form-control"  %>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <%= field.label :phone,"Celular" %><br>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-phone"></i>
+                    </div>
+                    <%= field.text_field :phone,class:"form-control", "data-inputmask" => '"mask": "(9999) 999-9999"'  %>
+                  </div><!-- /.input group -->
+                </div>
+              </div>
+            </div>
+          <% end %>
+        </div><!-- /.box-body -->
+      </div><!-- /.box -->      
+      <div class="box box-primary">
+        <div class="box-header with-border">
+          <h3 class="box-title">Contraseña de ingreso</h3>
+        </div><!-- /.box-header -->
+        <div class="box-body">
+          <div class="row">
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-group">
+                <%= f.label :password, "Contraseña"%>*<br>
+                <%= f.password_field :password,class:"form-control"  %>
+              </div>
+            </div>
+            <div class="col-xs-12 col-sm-6">
+              <div class="form-group">
+                 <%= f.label :password_confirmation, "Confirmar contraseña" %>*<br />
+                 <%= f.password_field :password_confirmation,class:"form-control" %>
+               </div>
+            </div>
+          </div>
+          <%if @take_role%>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <%= f.label :role_id, "Rol del usuario" %>*<br>
+                <%= f.select :role_id, options_for_select(Role.all.pluck(:nombre,:id),( @user.role ? @user.role_id : "" )),{},{class:"form-control select2"}%>
+                </div>
+              </div>
+            </div>
+          <%end%>
+        </div>
+      </div><!-- /.box -->
+      <div class="box-footer">
+        <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+        <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+      </div>
+
+    </div>
+  </div>
+  <%end%>
+  
+
+<% end %>
+
+ <script>
+      $(function () {
+        $("#user_profile_attributes_phone").inputmask();
+          $('input[type="radio"]').iCheck({
+          checkboxClass: 'icheckbox_minimal-blue',
+          radioClass: 'iradio_minimal-blue'
+        });
+          $('input[type="radio"]').first().parent().addClass("checked")
+          $(".select2").select2();
+          
+          alertmsj = "<%=alert%>"
+          validarMensajes();
+
+
+      });
+</script>

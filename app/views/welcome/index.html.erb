@@ -1,0 +1,11 @@
+<h1>Bienvenido</h1>
+
+<%if current_user.admin?%>             
+  <%= render 'index_admin' %>
+<%end%>
+<%if current_user.owner?%>             
+  <%= render 'index_owner' %>
+<%end%>
+<%if current_user.seller?%>             
+  <%= render 'index_seller' %>
+<%end%>
