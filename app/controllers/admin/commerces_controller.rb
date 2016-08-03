@@ -1,16 +1,9 @@
 class Admin::CommercesController < ApplicationController
   before_action :set_commerce, only: [:show, :edit, :update, :destroy]
-  before_action :verify_owner_role, only: [:create,:update]
-  
   # GET /commerces
   # GET /commerces.json
   def index
-    if current_user.admin?
       @commerces = Commerce.all
-    end
-    if current_user.owner?
-      @commerces = current_user.commerces
-    end
   end
 
   # GET /commerces/1
@@ -36,7 +29,7 @@ class Admin::CommercesController < ApplicationController
 
     respond_to do |format|
       if @commerce.save
-        format.html { redirect_to commerces_path, notice: 'Comercio creado exitosamente.' }
+        format.html { redirect_to admin_commerces_path, notice: 'Comercio creado exitosamente.' }
         format.json { render :show, status: :created, location: @commerce }
       else
         format.html { render :new }
@@ -51,7 +44,7 @@ class Admin::CommercesController < ApplicationController
     respond_to do |format|
       @commerce.slug=nil
       if @commerce.update(commerce_params)
-        format.html { redirect_to commerces_path, notice: 'Comercio actualizado exitosamente.' }
+        format.html { redirect_to admin_commerces_path, notice: 'Comercio actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @commerce }
       else
         format.html { render :edit }
@@ -75,13 +68,8 @@ class Admin::CommercesController < ApplicationController
     def set_commerce
       @commerce = Commerce.friendly.find(params[:id])
     end
-    def verify_owner_role
-      if current_user.owner?
-        params[:commerce][:user_id]=current_user.id
-      end
-    end
     # Never trust parameters from the scary internet, only allow the white list through.
     def commerce_params
-      params.require(:commerce).permit(:nombre, :descripcion,:user_id)
+      params.require(:commerce).permit(:name, :description,:user_id)
     end
 end
