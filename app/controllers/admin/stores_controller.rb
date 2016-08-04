@@ -4,13 +4,8 @@ class Admin::StoresController < ApplicationController
 
   # GET /stores
   # GET /stores.json
- def index
-    if current_user.admin?
+  def index
       @stores = Store.all
-    end
-    if current_user.owner?
-     @stores=current_user.commerces.friendly.find(get_commerce(params[:commerce_id])).stores
-    end
   end
 
   # GET /stores/1
@@ -20,23 +15,12 @@ class Admin::StoresController < ApplicationController
 
   # GET /stores/new
   def new
-    if current_user.admin?
       @store = Store.new
-    end
-    if current_user.owner?
-      @commerce = get_commerce(params[:commerce_id])
-      @store = Store.new
-      @store.commerce_id = @commerce.id
-    end
-    
   end
   # GET /commerce/:commerce_id/store/new
 
   # GET /stores/1/edit
   def edit
-    if current_user.owner?
-      @commerce = get_commerce(params[:commerce_id])
-    end
   end
 
   # POST /stores
@@ -46,9 +30,7 @@ class Admin::StoresController < ApplicationController
 
     respond_to do |format|
       if @store.save
-        ruta = current_user.admin? ? stores_path : stores_of_commerce_path(@store.commerce.slug)
-        puts"RUTA****"+ruta+"******"
-        format.html { redirect_to ruta, notice: 'Tienda creada exitosamente.' }
+        format.html { redirect_to admin_stores_path, notice: 'Tienda creada exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -62,8 +44,7 @@ class Admin::StoresController < ApplicationController
   def update
     respond_to do |format|
       if @store.update(store_params)
-        ruta = current_user.admin? ? stores_path : stores_of_commerce_path(@store.commerce.slug)
-        format.html { redirect_to ruta, notice: 'Tienda actualizada exitosamente.' }
+        format.html { redirect_to admin_stores_path, notice: 'Tienda actualizada exitosamente.' }
         format.json { render :show, status: :ok, location: @store }
       else
         format.html { render :edit }
@@ -87,16 +68,9 @@ class Admin::StoresController < ApplicationController
     def set_store
       @store = Store.friendly.find(params[:id])
     end
-    def set_commerce
-      if(params[:commerce_id])
-        puts "******1**"
-        @commerce = Commerce.friendly.find(params[:commerce_id])
-        puts @commerce.to_json
-        puts "******FIN**"
-      end
-    end
+
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:nombre, :direccion, :commerce_id)
+      params.require(:store).permit(:name, :description, :commerce_id)
     end
 end

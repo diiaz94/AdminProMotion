@@ -40,13 +40,13 @@ class User < ActiveRecord::Base
 	    if self.owner? 
 	      if self.commerces.count>0
 	        count = self.commerces.count
-	        return "Propietari"+(self.profile.sexo==true ? "o": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
+	        return "Propietari"+(self.profile.sex==true ? "o": "a")+" de "+count.to_s+" Comercio"+(count>1 ? "s" : "")
 	      else
 	        return "Owner"
 	      end
 	    end
 	    if self.seller?
-	      return "Vendedor"+(self.profile.sexo ? "" : "a")+" en la tienda "+self.sellers.first.store.nombre 
+	      return "Vendedor"+(self.profile.sex ? "" : "a")+" en la tienda "+self.sellers.first.store.nombre 
 		end
 		end  
 end
