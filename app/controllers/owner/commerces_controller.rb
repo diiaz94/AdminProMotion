@@ -10,9 +10,7 @@ class Owner::CommercesController < ApplicationController
   # GET /commerces/1
   # GET /commerces/1.json
   def show
-    @deposits = @commerce.deposits
     @stores = @commerce.stores
-    @sellers = @commerce.sellers
   end
 
   # GET /commerces/new
@@ -64,9 +62,6 @@ class Owner::CommercesController < ApplicationController
       format.json { head :no_content }
     end
   end
-  def deposits
-    puts "AQUII*********"
-  end
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commerce
@@ -74,6 +69,6 @@ class Owner::CommercesController < ApplicationController
     end
     # Never trust parameters from the scary internet, only allow the white list through.
     def commerce_params
-      params.require(:commerce).permit(:nombre, :descripcion)
+      params.require(:commerce).permit(:name, :description)
     end
 end

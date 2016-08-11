@@ -9,7 +9,7 @@ class UsersController < ApplicationController
       @user.slug=nil
       if @user.update(user_params)
         ruta = @user==current_user ? root_path : users_path
-        format.html { redirect_to ruta, notice: 'Usuario actualizado exitosamente.' }
+        format.html { redirect_to ruta, notice: 'Perfil actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @user }
       else
         format.html { render :edit }

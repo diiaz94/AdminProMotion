@@ -28,7 +28,7 @@ class Admin::RolesController < ApplicationController
 
     respond_to do |format|
       if @role.save
-        format.html { redirect_to @role, notice: 'Role was successfully created.' }
+        format.html { redirect_to @role, notice: 'Rol creado exitosamente.' }
         format.json { render :show, status: :created, location: @role }
       else
         format.html { render :new }
@@ -41,8 +41,9 @@ class Admin::RolesController < ApplicationController
   # PATCH/PUT /roles/1.json
   def update
     respond_to do |format|
+      @role.slug=nil
       if @role.update(role_params)
-        format.html { redirect_to @role, notice: 'Role was successfully updated.' }
+        format.html { redirect_to @role, notice: 'Beacon actualizado exitosamente.' }
         format.json { render :show, status: :ok, location: @role }
       else
         format.html { render :edit }
@@ -64,7 +65,7 @@ class Admin::RolesController < ApplicationController
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_role
-      @role = Role.find(params[:id])
+      @role = Role.friendly.find(params[:id])
     end
 
     # Never trust parameters from the scary internet, only allow the white list through.

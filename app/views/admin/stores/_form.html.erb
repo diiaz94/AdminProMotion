@@ -1,4 +1,4 @@
-<%= form_for(@store,url: (@store.new_record? ? admin_stores_url : admin_store_url)) do |f| %>
+<%= form_for(@store,url: (@store.new_record? ? admin_stores_url : admin_store_url),:html => {:class => "form-with-img"}) do |f| %>
   <script type="text/javascript">
    var errorsArray=[] ;
   <% @store.errors.each do |atributo, mensaje| %>
@@ -16,6 +16,29 @@
 
     <div class="box-body">
       <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="field">
+            <%=f.label :photo, "Imagen de la tienda"%><br>
+            <%= image_tag @store.picture, id: "containerImage", class: "img-upload"%><br>
+            <button type="button" style="margin-top:5px;" class="btn btn-default"  onclick="$('#file').click();">
+              <span class="glyphicon glyphicon-camera" aria-hidden="true" style="margin-right:5px;" ></span>
+              Cargar Imagen &nbsp;
+            </button>
+          </div>
+          <script>
+            var loadFile = function(event) {
+              var reader = new FileReader();
+              reader.onload = function(){
+                var output = document.getElementById('containerImage');
+                output.src = reader.result;
+              };
+              reader.readAsDataURL(event.target.files[0]);
+            };
+
+          </script>
+        </div>
+      </div>
+      <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
               <%= f.label :name, "Nombre" %>*<br>
@@ -24,9 +47,33 @@
         </div>
       </div>
       <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :category_id, "Categoria" %>*<br>
+            <%= f.select :category_id, options_for_select(Category.all.pluck(:name,:id),( @store.category ? @store.category_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
-              <%= f.label :description, "Descripcion" %><br>
+              <%= f.label :address, "Dirección" %>*<br>
+              <%= f.text_area :address ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :commerce_id, "Comercio Propietario" %>*<br>
+            <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:name,:id),( @store.commerce ? @store.commerce_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :description, "Descripción" %><br>
               <%= f.text_area :description ,class:"form-control" %>
             </div>
         </div>
@@ -36,12 +83,17 @@
   </div><!-- /.box -->
   
     <div class="box-footer">
-      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
-      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+      <button type="button" style="margin-top:5px;" class="visible-xs btn btn-block btn-primary btn-lg" aria-label="Left Align" onclick="getUrlImage('store');"><%= (@store.new_record? ? "Crear Tienda" : "Actualizar Tienda")%></button>
+    <button type="button" style="margin-top:5px;" class="hidden-xs btn btn-primary" aria-label="Left Align" onclick="getUrlImage('store');"><%= (@store.new_record? ? "Crear Tienda" : "Actualizar Tienda")%></button>
     </div>
 <% end %>
 
-
+<div class="hidden">
+  <form id = "file-img" method="POST" action="http://uploads.im/api?upload" enctype="multipart/form-data">
+    <input type="file" id="file" name="file" onchange= "loadFile(event)" />
+    <input type="submit" value="SEND FILE">
+  </form>
+</div>
 <script>
       $(function () {
         //Initialize Select2 Elements

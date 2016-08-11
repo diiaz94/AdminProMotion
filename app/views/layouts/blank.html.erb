@@ -55,10 +55,10 @@
 <script type="text/javascript">
 var  alertmsj = "<%=alert%>"
 var  noticemsj = "<%=notice%>"
-
+validarMensajes();
 </script>
 <div class="example-modal">
-  <div class="modal fade modal-success">
+  <div class="modal fade modal-success" id="modal-success">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -76,7 +76,7 @@ var  noticemsj = "<%=notice%>"
   </div><!-- /.modal -->
 </div><!-- /.example-modal -->  
 <div class="example-modal">
-  <div class="modal fade modal-danger">
+  <div class="modal fade modal-danger" id="modal-danger">
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-header">
@@ -88,6 +88,33 @@ var  noticemsj = "<%=notice%>"
         </div>
         <div class="modal-footer">
           <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+        </div>
+      </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+  </div><!-- /.modal -->
+</div><!-- /.example-modal -->  
+<div class="example-modal" >
+  <div class="modal fade modal-default" id="modal-loader">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h4 class="modal-title">Información</h4>
+        </div>
+        <div class="modal-body">
+          <div class="box box-danger">
+            <div class="box-header">
+              <h3 class="box-title">Cargando..</h3>
+            </div>
+            <div class="box-body">
+              Por favor espere
+            </div>
+            <!-- /.box-body -->
+            <!-- Loading (remove the following to stop the loading)-->
+            <div class="overlay">
+              <i class="fa fa-refresh fa-spin"></i>
+            </div>
+            <!-- end loading -->
+          </div>
         </div>
       </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

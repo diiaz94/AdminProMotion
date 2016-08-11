@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Uuid:</strong>
+  <%= @beacon.uuid %>
+</p>
+
+<p>
+  <strong>Mayor:</strong>
+  <%= @beacon.mayor %>
+</p>
+
+<p>
+  <strong>Minor:</strong>
+  <%= @beacon.minor %>
+</p>
+
+<%= link_to 'Edit', edit_beacon_path(@beacon) %> |
+<%= link_to 'Back', beacons_path %>

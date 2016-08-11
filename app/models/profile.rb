@@ -1,7 +1,7 @@
 class Profile < ActiveRecord::Base
 	belongs_to :user
-	validates :name, :presence => {:message => "El campo nombresno puede estar vacío"}
-	validates :last_name, :presence => {:message => "El campo apellidos no puede estar vacío"}
+	validates :name, :presence => {:message => "El campo Nombres no puede estar vacío"}
+	validates :last_name, :presence => {:message => "El campo Apellidos no puede estar vacío"}
 	extend FriendlyId
 	friendly_id :name, use: :slugged
 	def identifier

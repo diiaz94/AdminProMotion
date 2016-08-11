@@ -1,8 +1,6 @@
 Rails.application.routes.draw do
+  resources :users
   resources :profiles
-  resources :roles
-  resources :stores
-  resources :commerces
   resources :sessions
   # The priority is based upon order of creation: first created -> highest priority.
   # See how all your routes lay out with "rake routes".
@@ -21,6 +19,9 @@ Rails.application.routes.draw do
     resources :roles
     resources :commerces
     resources :stores
+    resources :categories
+    resources :promotions
+    resources :beacons
     get '/users/:id' => 'users#update', as: :user_edited
   end
 
@@ -28,6 +29,9 @@ Rails.application.routes.draw do
     resources :commerces do
       resources :stores
     end
+    resources :promotions
+    resources :beacons
+
   end
 
   get 'my_profile' => 'users#my_profile', as: :my_profile

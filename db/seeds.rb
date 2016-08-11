@@ -11,3 +11,10 @@ Role.create(
 					{name: "Owner",description: "Due;o de algun comercio"}
 				]
 			)
+Category.create(
+				[
+					{name: "Restaurants",description: "Ventas de comida"},
+					{name: "Sport Shop",description: "Venta de prendas deportivas"},
+					{name: "Night Club",description: "Sitios nocturnos"}
+				]
+			)

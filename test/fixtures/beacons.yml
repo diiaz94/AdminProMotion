@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  uuid: MyString
+  mayor: MyString
+  minor: MyString
+
+two:
+  uuid: MyString
+  mayor: MyString
+  minor: MyString

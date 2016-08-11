@@ -11,14 +11,14 @@
                     <thead>
                       <tr>
                         <th>Nombre</th>
-                        <th class="hidden-xs">Descripción</th>
+                        <th>Categoría</th>
                       </tr>
                     </thead>
                     <tbody>
                     <% @stores.each_with_index do |store,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-store-"+index.to_s%>>
                         <td><%= store.name %></td>
-                        <td class="hidden-xs"><%= store.description %></td>
+                        <td ><%= store.category.name %></td>
                       </tr>
                         <div class="example-modal">
                           <div class="modal fade" id=<%="modal-store-"+index.to_s%>>
@@ -40,7 +40,11 @@
                                           <dl>
                                             <dt>Nombre:</dt>
                                             <dd><%=store.name%></dd>
+                                            <dt>Categoría:</dt>
+                                            <dd><%=store.category.name%></dd>
                                             <dt>Dirección:</dt>
+                                            <dd><%=store.address%></dd>
+                                            <dt>Descripción:</dt>
                                             <dd><%=store.description%></dd>
                                                                               
                                           </dl>
@@ -69,7 +73,7 @@
                     <tfoot>
                       <tr>
                         <th>Nombre</th>
-                        <th class="hidden-xs">Descripción</th>
+                        <th>Categoría</th>
                       </tr>
                     </tfoot>
                   </table>

@@ -1,0 +1,59 @@
+<%= form_for(@beacon,url: (@beacon.new_record? ? admin_beacons_url : admin_beacon_url )) do |f| %>
+
+  <script type="text/javascript">
+   var errorsArray=[] ;
+  <% @beacon.errors.each do |atributo, mensaje| %>
+      errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
+  <% end %>
+  $( document ).ready(function() {
+    validarErrores(errorsArray);
+  });
+</script>
+
+  <div class="box box-primary">
+    <div class="box-header with-border">
+      <h3 class="box-title">Datos del Beacon</h3>
+    </div><!-- /.box-header -->
+
+    <div class="box-body">
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :uuid, "UUID" %>*<br>
+              <%= f.text_field :uuid,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :major, "Major" %>*<br>
+              <%= f.text_field :major ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :minor, "Minor" %>*<br>
+              <%= f.text_field :minor ,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="form-group">
+            <%= f.label :store_id, "Tienda asociada" %>*<br>
+            <%= f.select :store_id, options_for_select(Store.all.pluck(:name,:id),( @beacon.store ? @beacon.store_id : "" )),{},{class:"form-control select2"}%>
+          </div>
+        </div>
+      </div>      
+
+    </div><!-- /.box-body -->
+  </div><!-- /.box -->
+  
+    <div class="box-footer">
+      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
+      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+    </div>
+<% end %>

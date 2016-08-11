@@ -41,7 +41,7 @@ class WelcomeController < ApplicationController
     	if @user.save
     	 	 redirect_to login_path
         else
-        	render "register_user", layout: "blank"
+          redirect_to(:back,alert: "Lo sentimos, no se ha podido crear el usuario Administrador.")
         return
         end
     else

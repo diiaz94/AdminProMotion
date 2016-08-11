@@ -2,12 +2,13 @@
 <%= form_for(setup_user(@user),url: {action: "create_admin_user"}  ) do |f| %>
 
 
-  <script type="text/javascript">
+  <script type="text/javascript"> 
    var errorsArray=[] ;
   <% @user.errors.each do |atributo, mensaje| %>
       errorsArray.push({atributo:"<%="#{atributo}"%>",mensaje:"<%="#{mensaje}"%>"});
   <% end %>
   $( document ).ready(function() {
+    debugger
     validarErrores(errorsArray);
   });
 </script>
