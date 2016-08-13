@@ -47,6 +47,27 @@
         </div>
       </div>
       <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :email, "Email" %>*<br>
+              <%= f.email_field :email,class:"form-control" %>
+            </div>
+        </div>
+      </div>
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+                <div class="form-group">
+                  <%= f.label :phone,"Celular" %><br>
+                  <div class="input-group">
+                    <div class="input-group-addon">
+                      <i class="fa fa-phone"></i>
+                    </div>
+                    <%= f.text_field :phone,class:"form-control", "data-inputmask" => '"mask": "(9999) 999-9999"'  %>
+                  </div><!-- /.input group -->
+                </div>
+              </div>
+            </div>
+      <div class="row">
         <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
           <div class="form-group">
             <%= f.label :category_id, "Categoria" %>*<br>
@@ -98,5 +119,6 @@
       $(function () {
         //Initialize Select2 Elements
         $(".select2").select2();
+        $("#store_phone").inputmask();
       });
 </script>

@@ -1,3 +1,10 @@
+class EmailValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+      record.errors[attribute] << (options[:message] || "Debe introducir un Email válido")
+    end
+  end
+end
 class Store < ActiveRecord::Base
 	belongs_to :category
 	belongs_to :commerce
@@ -8,12 +15,13 @@ class Store < ActiveRecord::Base
   	friendly_id :name, use: :slugged
 
 	validates :name, :presence => {:message => "El campo Nombre no puede estar vacío"}
-	validates :address, :presence => {:message => "El campo Dirección no puede estar vacío"}
+	validates :email, :presence => {:message => "El campo Email no puede estar vacío"}
+	validates :email, email:  true
+	validates :address, :presence  => {:message => "El campo Dirección no puede estar vacío"}
 	validates :category_id, :presence => {:message => "Debe indicar la Categoría"}
 	validates :commerce_id, :presence => {:message => "Debe indicar el Comercio"}
-
 	def init
-		self.picture  ||= "/photo_store/default_promotion.png"
+		self.picture  ||= "/photo_store/default_store.png"
 		self.active =  false if self.active.nil?
 	end	
 	

@@ -1,3 +1,11 @@
+class EmailValidator < ActiveModel::EachValidator
+  def validate_each(record, attribute, value)
+    unless value =~ /\A([^@\s]+)@((?:[-a-z0-9]+\.)+[a-z]{2,})\z/i
+      record.errors[attribute] << (options[:message] || "Debe introducir un Email válido")
+    end
+  end
+end
+
 class User < ActiveRecord::Base
 	authenticates_with_sorcery!
 	attr_accessor  :password, :password_confirmation
@@ -10,7 +18,8 @@ class User < ActiveRecord::Base
 
 	#Validaciones
 	validates :email, :presence => {:message => "El campo email no puede estar vacío"}
-	validates :email, :uniqueness => {:message => "Ya existe un usuario cone este correo"}
+	validates :email, :uniqueness => {:message => "Ya existe un usuario con este correo"}
+	validates :email, email:  true
 	validates :password, length: {:if => :password_required?, minimum: 8 , message:"El campo contraseña debe contener al menos 8 dígitos"}
 	validates :password, :presence =>  { :if => :password_required?, :message => "El campo contraseña no puede estar vacío"}
 	validates :password, :confirmation =>  { :if => :password_required?, :message => "Las contraseñas no coinciden"}
