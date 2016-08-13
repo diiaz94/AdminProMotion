@@ -43,7 +43,7 @@
                                                             </a>
                                                           </h4>
                                                         </div>
-                                                        <div id=<%="collapse_1_"+store.id.to_s%> class="panel-collapse collapse in">
+                                                        <div id=<%="collapse_1_"+store.id.to_s%> class="panel-collapse collapse in first">
                                                           <div class="box-body">
                                                             <div class="row">
                                                               <div class="col-xs-12 col-sm-6">
@@ -75,7 +75,8 @@
                                                       <div class="panel box box-success">
                                                         <div class="box-header with-border">
                                                           <h4 class="box-title">
-                                                            <a data-toggle="collapse" data-id=<%=store.id.to_s%> class="open-map"  data-parent=<%="#accordion-"+store.id.to_s%> href=<%="#collapse_2_"+store.id.to_s%>>
+                                                            <a data-toggle="collapse" data-id=<%=store.id.to_s%> 
+                                                              data-latitude=<%=store.latitude.to_s%> data-longitude=<%=store.longitude.to_s%> class="open-map"  data-parent=<%="#accordion-"+store.id.to_s%> href=<%="#collapse_2_"+store.id.to_s%>>
                                                               Ubicacion
                                                             </a>
                                                           </h4>
@@ -194,35 +195,58 @@
                 }                
             }
         };
-
-        $(".open-map").on("click",initMap)
+        $('.detail-store').on('hidden.bs.modal', function () {
+          var element=$(this);
+          $(element.find(".box-group .in")).collapse("hide");
+          $(element.find(".box-group .first")).collapse("show");
+          mapWasOpen=false;
+        });
+        $(".open-map").on("click",openMap)
         mapsInitialized=[];
-        function initMap() {
+        mapWasOpen=false;
+        //var store_map=null;
+        function openMap(){
+          debugger
+          if (!mapWasOpen) {
             var element=$(this)
+            var lat = $(element).data("latitude");
+            var lon = $(element).data("longitude");
+            //var lat = 18.466817;
+            //var lon = -69.913237;
             var id = element.data("id");
-            //var lat = $(element).data("latitude");
-            //var lon = $(element).data("longitude");
-            var myCenter=new google.maps.LatLng(18.466817,-69.913237);
-            $("#map-1").html("")
-            $("#map-2").html("")
-            debugger
-            if(mapsInitialized.indexOf(id)==-1){
+            console.log("id::"+id+" latitude::"+lat+" longitude::"+lon)
+              
+            if(store_map==null){
+              $("#map-"+id).append("<div id='map' style='width:100%;height:380px;'></div>")
+              initMap();
+              mapInitialized=id;
+            }else{
+              $("#map-"+id).html("");
+              $("#map-"+id).append(store_map.getDiv());
+            }
+            changeCenter(lat,lon);
+            mapWasOpen=true;
+          }
+        }
+
+        function initMap() {
             var mapProp = {
-              center:new google.maps.LatLng(18.466817,-69.913237),
               zoom:18,
               mapTypeId:google.maps.MapTypeId.ROADMAP,
               scrollwheel: false
             };
-              var map=new google.maps.Map(document.getElementById("map-"+id), mapProp);
-              var marker=new google.maps.Marker({
-              position:myCenter,
+              store_map=new google.maps.Map(document.getElementById("map"), mapProp);
+        }
+        function changeCenter(lat,lon){
+          myCenter=new google.maps.LatLng(lat,lon);
+          store_map.setCenter(myCenter);
+          if(marker!=null) marker.setMap(null);
+          marker=new google.maps.Marker({
+                position:myCenter,
                 animation:google.maps.Animation.BOUNCE
               });
-
-            marker.setMap(map);
-              mapsInitialized.push(id);
-              console.log("init map of store nro::"+id)
-            }
+          marker.setMap(store_map);
         }
+
       });
 </script>

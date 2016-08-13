@@ -1,3 +1,6 @@
+var store_map=null;
+var marker=null;
+var myCenter=null;
 $.fn.pressEnter = function(fn) {  
   
     return this.each(function() {  
