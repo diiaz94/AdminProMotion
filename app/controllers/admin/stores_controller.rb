@@ -30,7 +30,11 @@ class Admin::StoresController < ApplicationController
   # POST /stores.json
   def create
     @store = Store.new(store_params)
-
+    latlng=getLatLon(@store.address)
+    puts "latlng****::"+latlng
+    @store.latitude = latlng[0]
+    @store.longitude = latlng[1]
+    puts "AQUI CDTMMMM *****"+ @store.to_s 
     respond_to do |format|
       if @store.save
         format.html { redirect_to admin_stores_path, notice: 'Tienda creada exitosamente.' }
@@ -45,6 +49,13 @@ class Admin::StoresController < ApplicationController
   # PATCH/PUT /stores/1
   # PATCH/PUT /stores/1.json
   def update
+    puts "llamar a ws"
+    latlng=getLatLon(@store.address)
+     puts "latlng****::"+latlng.to_s
+    @store.latitude = latlng[0]
+    @store.longitude = latlng[1]
+    puts "AQUI CDTMMMM *****"+ @store.to_json
+
     respond_to do |format|
       @store.slug=nil
       if @store.update(store_params)

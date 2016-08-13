@@ -47,7 +47,30 @@ class ApplicationController < ActionController::Base
 	    return nil
 	  end  
 	end 
-	
+	def getLatLon(address)
+		begin
+			address.delete!("^\u{0000}-\u{007F}")
+			uri = URI.parse("http://maps.googleapis.com/maps/api/geocode/json?address="+address+"&sensor=false")
+	    	http = Net::HTTP.new(uri.host, uri.port)
+		   	request = Net::HTTP::Get.new(uri.request_uri)
+		    res = http.request(request)
+	    	response = JSON.parse(res.body)
+
+			if(response["status"] and response["status"]=="OK")
+	    		puts "OK webservice de googlemaps****" + response["results"][0]["geometry"]["location"].to_s
+	     	return [response["results"][0]["geometry"]["location"]["lat"],response["results"][0]["geometry"]["location"]["lng"]] 
+
+	    	else
+		    	puts "Error en respuesta webservice de googlemaps::"
+			    return  [0,0] 
+	   		end
+		  rescue Exception => e
+    		"internal error modifying exception message #{e}"
+			puts "Exception en webservice de googlemaps:: #{e}"
+			return  [0,0] 
+		end
+	end
+
     private
 	def not_authenticated
 	  redirect_to login_path, alert: "Debes iniciar sesión primero"
