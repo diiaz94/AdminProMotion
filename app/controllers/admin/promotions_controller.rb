@@ -10,12 +10,14 @@ class Admin::PromotionsController < ApplicationController
   # GET /promotions/1
   # GET /promotions/1.json
   def show
+    @promotions = Promotion.all
+    render "index"
   end
 
   # GET /promotions/new
   def new
     @promotion = Promotion.new
-    @promotion.picture="/photo_store/default.png"
+
   end
 
   # GET /promotions/1/edit
@@ -26,15 +28,10 @@ class Admin::PromotionsController < ApplicationController
   # POST /promotions.json
   def create
     @promotion = Promotion.new(promotion_params)
-    if params[:until]
-      date=params[:until].split("/")[0]
-      month=params[:until].split("/")[1]
-      year=params[:until].split("/")[2]
-      @promotion.until =  DateTime.new(year, month, date)
-    end
+
     respond_to do |format|
       if @promotion.save
-        format.html { redirect_to @promotion, notice: 'Promoción creada exitosamente.' }
+        format.html { redirect_to admin_promotions_path, notice: 'Promoción creada exitosamente.' }
         format.json { render :show, status: :created, location: @promotion }
       else
         format.html { render :new }
@@ -49,8 +46,9 @@ class Admin::PromotionsController < ApplicationController
     respond_to do |format|
       @promotion.slug=nil
       if @promotion.update(promotion_params)
-        format.html { redirect_to @promotion, notice: 'Promoción actualizada exitosamente.' }
-        format.json { render :show, status: :ok, location: @promotion }
+        format.html { redirect_to admin_promotions_path, notice: 'Promoción actualizada exitosamente.' }
+        msg = { :status => "ok", :message => "Success!", :promotion => @promotion }
+        format.json  { render :json => msg } # don't do msg.to_json
       else
         format.html { render :edit }
         format.json { render json: @promotion.errors, status: :unprocessable_entity }
@@ -67,6 +65,9 @@ class Admin::PromotionsController < ApplicationController
       format.json { head :no_content }
     end
   end
+  def activation
+    
+  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -76,6 +77,6 @@ class Admin::PromotionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def promotion_params
-      params.require(:promotion).permit(:title, :description, :picture, :price)
+      params.require(:promotion).permit(:title, :description, :picture, :price,:store_id,:until,:active)
     end
 end

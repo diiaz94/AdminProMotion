@@ -50,6 +50,9 @@ $( document ).ready(function() {
 			});
 		}
 	});
+
+	$(".change_status").on("click",change_status);
+	$(".detail-inside").on("click",show_detail);
   	$('.cedula').unbind();
   	$('.cedula').bind('keyup', function(){
 		if(this.value.length>parseInt($(this).data("maxlength"))){
@@ -62,8 +65,9 @@ $( document ).ready(function() {
 	    	this.value = this.value.substring(0,$(this).data("maxlength"))
 	    }
 	});
-		$.each($(".monto"), function( index, value ) {
+		$.each($(".money"), function( index, value ) {
   			$(value).text(formato_numero($(value).text(), 2, ',', '.'))
+  			$(value).val(enmask($(value).val().replaceAll(".","")))
 		});
         //$(".monto").text(formato_numero($(".monto").text(), 2, ',', '.'));
 
@@ -238,6 +242,9 @@ function enmask(mask){
 }
 
 function getUrlImage(model){
+		$.each($(".money"), function( index, e ) {
+  			$(e).val($(e).val().replaceAll(".","").replace(",","."));
+		});
 	if ($("#file").val().length>0){
 		var formData = new FormData(document.getElementById("file-img"));
 		 $.ajax({
@@ -275,3 +282,47 @@ function getUrlImage(model){
 		$(".form-with-img").submit();
 	}
 }
+
+function showNoticeMessage(mjs){
+	noticemsj=mjs;
+	validarMensajes();
+}function showErrorMessage(mjs){
+	alertmsj=mjs;
+	validarMensajes();
+}
+
+function change_status(event){
+	var element = $(this);
+	var model = element.data("model");
+	var model_description = element.data("model-description");
+	var active = element.text()=="Activar";
+	$.ajax({
+	  url: element.data("url"),
+	  dataType: "json",
+	  data: JSON.parse("{\""+model+"\":{\"active\":\""+active+"\"}}")
+	  ,
+	  method: "PATCH",
+	  beforeSend: function( xhr ) {
+	  	xhr.setRequestHeader('X-CSRF-Token', $('meta[name="csrf-token"]').attr('content'));
+		$("#modal-loader").modal({backdrop: 'static', keyboard: false}); 
+	  }
+	}).done(function( data ) {
+		console.log(data)
+	    showNoticeMessage(model_description+" "+(element.text()=="Activar"?"activada":"desactivada")+" exitosamente");
+	    location.reload();
+	  }).error(function(data){
+				console.log(data.responseText);
+				showErrorMessage("Lo sentimos, no pudimos "+element.text()+" la "+model_description.toLowerCase());
+			}).always(function() {
+	   		$("#modal-loader").modal("hide");
+	  });
+
+}
+
+
+function show_detail(event){
+	var element = $(this);
+    history.pushState({target:element.data("target")},"", window.location.origin+element.data("url"));
+    current_state=history.state;
+}
+

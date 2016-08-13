@@ -11,12 +11,14 @@ class Admin::StoresController < ApplicationController
   # GET /stores/1
   # GET /stores/1.json
   def show
+    @stores = Store.all
+    render "index"
   end
 
   # GET /stores/new
   def new
       @store = Store.new
-      @store.picture="/photo_store/default.png"
+      @store.picture="/photo_store/default_store.png"
   end
   # GET /commerce/:commerce_id/store/new
 
@@ -47,7 +49,8 @@ class Admin::StoresController < ApplicationController
       @store.slug=nil
       if @store.update(store_params)
         format.html { redirect_to admin_stores_path, notice: 'Tienda actualizada exitosamente.' }
-        format.json { render :show, status: :ok, location: @store }
+        msg = { :status => "ok", :message => "Success!", :store => @store }
+        format.json  { render :json => msg } # don't do msg.to_json
       else
         format.html { render :edit }
         format.json { render json: @store.errors, status: :unprocessable_entity }
@@ -73,6 +76,6 @@ class Admin::StoresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:name, :address, :description, :commerce_id,:category_id,:picture)
+      params.require(:store).permit(:name, :address, :description, :commerce_id,:category_id,:picture, :active)
     end
 end
