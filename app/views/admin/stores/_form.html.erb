@@ -1,3 +1,58 @@
+<style>
+html, body {
+  height: 100%;
+  margin: 0;
+  padding: 0;
+}
+#map {
+  height: 100%;
+}
+.controls {
+  margin-top: 10px;
+  border: 1px solid transparent;
+  border-radius: 2px 0 0 2px;
+  box-sizing: border-box;
+  -moz-box-sizing: border-box;
+  height: 32px;
+  outline: none;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+#pac-input {
+  background-color: #fff;
+  font-family: Roboto;
+  font-size: 15px;
+  font-weight: 300;
+  margin-left: 12px;
+  padding: 0 11px 0 13px;
+  text-overflow: ellipsis;
+  width: 55%;
+}
+
+#pac-input:focus {
+  border-color: #4d90fe;
+}
+
+.pac-container {
+  font-family: Roboto;
+}
+
+#type-selector {
+  color: #fff;
+  background-color: #4d90fe;
+  padding: 5px 11px 0px 11px;
+}
+
+#type-selector label {
+  font-family: Roboto;
+  font-size: 13px;
+  font-weight: 300;
+}
+
+#target {
+  width: 345px;
+}
+</style>  
 <%= form_for(@store,url: (@store.new_record? ? admin_stores_url : admin_store_url),:html => {:class => "form-with-img"}) do |f| %>
   <script type="text/javascript">
    var errorsArray=[] ;
@@ -16,7 +71,7 @@
 
     <div class="box-body">
       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-8 col-md-6 col-lg-6">
           <div class="field">
             <%=f.label :photo, "Imagen de la tienda"%><br>
             <%= image_tag @store.picture, id: "containerImage", class: "img-upload"%><br>
@@ -39,7 +94,7 @@
         </div>
       </div>
       <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="form-group">
               <%= f.label :name, "Nombre" %>*<br>
               <%= f.text_field :name,class:"form-control" %>
@@ -47,7 +102,7 @@
         </div>
       </div>
       <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="form-group">
               <%= f.label :email, "Email" %>*<br>
               <%= f.email_field :email,class:"form-control" %>
@@ -55,7 +110,7 @@
         </div>
       </div>
             <div class="row">
-              <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+              <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
                 <div class="form-group">
                   <%= f.label :phone,"Celular" %><br>
                   <div class="input-group">
@@ -68,7 +123,7 @@
               </div>
             </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
           <div class="form-group">
             <%= f.label :category_id, "Categoria" %>*<br>
             <%= f.select :category_id, options_for_select(Category.all.pluck(:name,:id),( @store.category ? @store.category_id : "" )),{},{class:"form-control select2"}%>
@@ -76,15 +131,27 @@
         </div>
       </div>
       <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-            <div class="form-group">
-              <%= f.label :address, "Dirección" %>*<br>
-              <%= f.text_area :address ,class:"form-control" %>
+          <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
+            <label>Ubicación</label><span>&nbsp;</span>
+            <button id="add_marker" type="button" class="btn btn-warning btn-xs <%=@store.longitude ? 'hidden' : '' %>">Agregar Marcador</button>
+            <button id="remove_marker" type="button" class="btn btn-danger btn-xs <%=@store.longitude ? '' : 'hidden' %>" >Quitar Marcador</button>
+            <button id="go_to_marker" type="button" class="btn btn-success btn-xs <%=@store.longitude ? '' : 'hidden' %>" >Ir al Marcador</button>
+            <button id="restaurate_marker" type="button" class="btn btn-primary btn-xs hidden" >Restaurar Marcador</button>
+            
+            <div class="row">
+              <div class="col-xs-12 col-sm-6 col-md-8 col-lg-6">
+                <input id="pac-input" class="controls" type="text" placeholder="Busca aqui la ubicación de la tienda">
+              </div>
             </div>
+
+            <div id='map' style='width:100%;height:380px;'>
+
+            </div>
+
         </div>
       </div>
       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+        <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
           <div class="form-group">
             <%= f.label :commerce_id, "Comercio Propietario" %>*<br>
             <%= f.select :commerce_id, options_for_select(Commerce.all.pluck(:name,:id),( @store.commerce ? @store.commerce_id : "" )),{},{class:"form-control select2"}%>
@@ -92,7 +159,7 @@
         </div>
       </div>
       <div class="row">
-          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <div class="form-group">
               <%= f.label :description, "Descripción" %><br>
               <%= f.text_area :description ,class:"form-control" %>
@@ -114,11 +181,156 @@
     <input type="file" id="file" name="file" onchange= "loadFile(event)" />
     <input type="submit" value="SEND FILE">
   </form>
-</div>
+
+
 <script>
       $(function () {
         //Initialize Select2 Elements
         $(".select2").select2();
         $("#store_phone").inputmask();
+        $("#add_marker").on("click",add_marker)
+        $("#remove_marker").on("click",remove_marker)
+        $("#go_to_marker").on("click",go_to_marker)
+        $("#restaurate_marker").on("click",restaurate_marker)
+
+
       });
+        var new_record = "<%=@store.new_record?%>"
+
+        var store_center={
+          latitude : "<%=@store.new_record? ? @caracas_latitude : @store.latitude%>",
+          longitude : "<%=@store.new_record? ? @caracas_longitude : @store.longitude%>"
+        }
+        lat_selected=store_center.latitude;
+        lng_selected=store_center.longitude;
+function add_marker(){
+  $("#remove_marker").removeClass("hidden");
+  $("#go_to_marker").removeClass("hidden");
+  $("#add_marker").addClass("hidden");
+  $("#restaurate_marker").addClass("hidden");
+  changeStoreMarker(store_map.getCenter());
+  store_marker.setMap(store_map);
+  lat_selected=store_map.getCenter().lat();
+  lng_selected=store_map.getCenter().lng();
+  //if () {};
+}
+function remove_marker(){
+  $("#remove_marker").addClass("hidden");
+  $("#go_to_marker").addClass("hidden");
+  $("#add_marker").removeClass("hidden");
+  $("#restaurate_marker").addClass("hidden");
+  store_marker.setMap(null);
+  lat_selected="";
+  lng_selected="";
+}
+
+function go_to_marker(){
+  //add_marker();
+  changeStoreMarker(new google.maps.LatLng(lat_selected,lng_selected));
+  store_map.setCenter(new google.maps.LatLng(lat_selected,lng_selected));
+}
+
+function restaurate_marker(){
+  $("#restaurate_marker").addClass("hidden");
+  changeStoreMarker(new google.maps.LatLng(store_center.latitude,store_center.longitude));
+  store_map.setCenter(new google.maps.LatLng(store_center.latitude,store_center.longitude));
+  lat_selected=store_center.latitude;
+  lng_selected=store_center.longitude;
+
+}
+
+function initAutocomplete() {
+   store_map = new google.maps.Map(document.getElementById('map'), {
+    center: {lat: 10.4762922, lng: -66.9088739},
+    zoom: 13,
+    mapTypeId: google.maps.MapTypeId.ROADMAP
+  });
+
+  // Create the search box and link it to the UI element.
+  var input = document.getElementById('pac-input');
+  var searchBox = new google.maps.places.SearchBox(input);
+  store_map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
+
+  // Bias the SearchBox results towards current map's viewport.
+  store_map.addListener('bounds_changed', function() {
+    searchBox.setBounds(store_map.getBounds());
+  });
+
+  var markers = [];
+  // Listen for the event fired when the user selects a prediction and retrieve
+  // more details for that place.
+  searchBox.addListener('places_changed', function() {
+    var places = searchBox.getPlaces();
+
+    if (places.length == 0) {
+      return;
+    }
+
+    // Clear out the old markers.
+    markers.forEach(function(marker) {
+      marker.setMap(null);
+    });
+    markers = [];
+
+    // For each place, get the icon, name and location.
+    var bounds = new google.maps.LatLngBounds();
+    places.forEach(function(place) {
+      var icon = {
+        url: place.icon,
+        size: new google.maps.Size(71, 71),
+        origin: new google.maps.Point(0, 0),
+        anchor: new google.maps.Point(17, 34),
+        scaledSize: new google.maps.Size(25, 25)
+      };
+
+      // Create a marker for each place.
+      markers.push(new google.maps.Marker({
+        map: store_map,
+        icon: icon,
+        title: place.name,
+        position: place.geometry.location
+      }));
+
+      if (place.geometry.viewport) {
+        // Only geocodes have viewport. 
+        bounds.union(place.geometry.viewport);
+      } else {
+        bounds.extend(place.geometry.location);
+      }
+    });
+    store_map.fitBounds(bounds);
+  });
+  initMapOfStore();
+}
+
+function changeStoreMarker(center){
+    if(store_marker!=null) store_marker.setMap(null);
+    store_marker = new google.maps.Marker({
+      position: center,
+      map: store_map,
+      title: 'Tienda',
+      draggable: true
+      // animation:google.maps.Animation.BOUNCE
+    });
+    google.maps.event.addListener(store_marker, 'dragend', function (event) {
+      lat_selected = this.getPosition().lat();
+      lng_selected = this.getPosition().lng();
+      console.log(this.getPosition().lat());
+      console.log(this.getPosition().lng());
+      $("#restaurate_marker").removeClass("hidden");
+    });
+
+}
+function initMapOfStore(){
+  if (new_record == true) {
+    console.log("new_record");
+  }else{
+    console.log("old_record");
+    console.log(JSON.stringify(store_center)+store_center.longitude);
+    store_map.setCenter(new google.maps.LatLng(store_center.latitude,store_center.longitude));
+    changeStoreMarker(new google.maps.LatLng(store_center.latitude,store_center.longitude));
+    store_map.setZoom(19);
+
+  }
+}
 </script>

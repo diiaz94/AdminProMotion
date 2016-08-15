@@ -2,11 +2,12 @@
 <html>
 <head>
   <title>ProMotion</title>
-	<meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no">
+	   <meta charset="utf-8">
+
     <!-- Chrome, Firefox OS y Opera -->
-    <meta name="theme-color" content="#4285f4"/>
+
     <!-- iOS Safari -->
    
   <%= stylesheet_link_tag    'application', media: 'all', 'data-turbolinks-track' => true %>
@@ -33,8 +34,8 @@
           apply the skin class to the body tag so the changes take effect.
     -->
     <link rel="stylesheet" href="/dist/css/skins/skin-blue.min.css">
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAykSrVw1tu8bm4M816Fo8AbX0OcpV2bX8">
-    </script>
+    </div>
+
 </head>
 
  <body class="hold-transition skin-blue sidebar-mini fixed">
@@ -593,29 +594,20 @@ validarMensajes();
         });
           //$('input[type="radio"]').first().parent().addClass("checked")
           $(".select2").select2();
-            var click_parcial = function(){
-              $("#otro-monto").val("");
-              $("#otro-monto").attr("disabled",true);
-              $("#total-pago").attr("checked",true);
-              $("#parcial-pago").removeAttr("checked");
 
-            }
-            var click_total = function(){
-              $("#otro-monto").removeAttr("disabled");
-              $("#total-pago").removeAttr("checked");
-              $("#parcial-pago").attr("checked",true);
-            }
-            $($("#total-pago").siblings().first()).click(click_parcial);
-            $($("#total-pago").closest("label")).click(click_parcial);
-            $($("#parcial-pago").siblings().first()).click(click_total);
-            $($("#parcial-pago").closest("label")).click(click_total);
   $('.money').bind('keyup', function(){
     var x =this
     $(this).val(enmask(this.value))
   });
 
       });
+
+
+
 </script>
+
+<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDk0TfsDk1iJAUgGSifHLLgWEGwrBMo79o&libraries=places&callback=initAutocomplete"
+         async defer></script>
 
 </body>
 

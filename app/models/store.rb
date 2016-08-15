@@ -20,6 +20,8 @@ class Store < ActiveRecord::Base
 	validates :address, :presence  => {:message => "El campo Dirección no puede estar vacío"}
 	validates :category_id, :presence => {:message => "Debe indicar la Categoría"}
 	validates :commerce_id, :presence => {:message => "Debe indicar el Comercio"}
+	validates :latitude, :presence => {:message => "Debe indicar la ubicación de la Tienda"}
+	validates :longitude, :presence => {:message => "Debe indicar la ubicación de la Tienda"}
 	def init
 		self.picture  ||= "/photo_store/default_store.png"
 		self.active =  false if self.active.nil?

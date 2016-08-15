@@ -1,7 +1,7 @@
 class Admin::StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :set_commerce, only:[:new_store_of_commerce]
-
+  before_action :set_caracas_center, only: [:new,:edit]
   # GET /stores
   # GET /stores.json
   def index
@@ -24,20 +24,21 @@ class Admin::StoresController < ApplicationController
 
   # GET /stores/1/edit
   def edit
+    puts @store.new_record?.to_s
   end
 
   # POST /stores
   # POST /stores.json
   def create
     @store = Store.new(store_params)
-    latlng=getLatLon(@store.address)
-    puts "latlng****::"+latlng
-    @store.latitude = latlng[0]
-    @store.longitude = latlng[1]
-    puts "AQUI CDTMMMM *****"+ @store.to_s 
+    #latlng=getLatLon(@store.address)
+    #puts "latlng****::"+latlng
+    #@store.latitude = latlng[0]
+    #@store.longitude = latlng[1]
+    #puts "AQUI CDTMMMM *****"+ @store.to_s 
     respond_to do |format|
       if @store.save
-        format.html { redirect_to admin_stores_path, notice: 'Tienda creada exitosamente.' }
+        format.html { redirect_to admin_store_path(@store), notice: 'Tienda creada exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -50,16 +51,17 @@ class Admin::StoresController < ApplicationController
   # PATCH/PUT /stores/1.json
   def update
     puts "llamar a ws"
-    latlng=getLatLon(@store.address)
-     puts "latlng****::"+latlng.to_s
-    @store.latitude = latlng[0]
-    @store.longitude = latlng[1]
-    puts "AQUI CDTMMMM *****"+ @store.to_json
+
+    #latlng=getLatLon(@store.address)
+    #puts "latlng****::"+latlng.to_s
+    #@store.latitude = latlng[0]
+    #@store.longitude = latlng[1]
+    #puts "AQUI CDTMMMM *****"+ @store.to_json
 
     respond_to do |format|
       @store.slug=nil
       if @store.update(store_params)
-        format.html { redirect_to admin_stores_path, notice: 'Tienda actualizada exitosamente.' }
+        format.html { redirect_to admin_store_path(@store), notice: 'Tienda actualizada exitosamente.' }
         msg = { :status => "ok", :message => "Success!", :store => @store }
         format.json  { render :json => msg } # don't do msg.to_json
       else
@@ -80,6 +82,11 @@ class Admin::StoresController < ApplicationController
   end
 
   private
+    def set_caracas_center
+      @caracas_latitude = "10.4762922"
+      @caracas_longitude = "-66.9088739" 
+      
+    end
     # Use callbacks to share common setup or constraints between actions.
     def set_store
       @store = Store.friendly.find(params[:id])
@@ -87,6 +94,6 @@ class Admin::StoresController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
-      params.require(:store).permit(:name, :address, :description, :commerce_id,:category_id,:picture, :active,:email,:phone)
+      params.require(:store).permit(:name, :address, :description, :commerce_id,:category_id,:picture, :active,:email,:phone,:latitude,:longitude)
     end
 end

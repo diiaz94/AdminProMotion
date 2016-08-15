@@ -1,6 +1,7 @@
 var store_map=null;
 var marker=null;
 var myCenter=null;
+var store_marker=null
 $.fn.pressEnter = function(fn) {  
   
     return this.each(function() {  
@@ -243,11 +244,19 @@ function enmask(mask){
 
 	return result;
 }
+var lat_selected="";
+var lng_selected="";
 
 function getUrlImage(model){
 		$.each($(".money"), function( index, e ) {
   			$(e).val($(e).val().replaceAll(".","").replace(",","."));
 		});
+		if (model=="store") {
+			$(".form-with-img")
+			.append("<input type='hidden' name='store[latitude]' value='"+lat_selected+"' />")
+			.append("<input type='hidden' name='store[longitude]' value='"+lng_selected+"' />")
+			
+		};
 	if ($("#file").val().length>0){
 		var formData = new FormData(document.getElementById("file-img"));
 		 $.ajax({
