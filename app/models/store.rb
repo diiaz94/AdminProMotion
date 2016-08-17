@@ -5,6 +5,14 @@ class EmailValidator < ActiveModel::EachValidator
     end
   end
 end
+class UbicationValidator < ActiveModel::Validator
+  def validate(record)
+    if options[:fields].any?{|field| record.send(field) == "" }
+      record.errors[:base] << "Debe indicar la ubicación de la tienda"
+    end
+  end
+end
+
 class Store < ActiveRecord::Base
 	belongs_to :category
 	belongs_to :commerce
@@ -17,11 +25,10 @@ class Store < ActiveRecord::Base
 	validates :name, :presence => {:message => "El campo Nombre no puede estar vacío"}
 	validates :email, :presence => {:message => "El campo Email no puede estar vacío"}
 	validates :email, email:  true
-	validates :address, :presence  => {:message => "El campo Dirección no puede estar vacío"}
 	validates :category_id, :presence => {:message => "Debe indicar la Categoría"}
 	validates :commerce_id, :presence => {:message => "Debe indicar el Comercio"}
-	validates :latitude, :presence => {:message => "Debe indicar la ubicación de la Tienda"}
-	validates :longitude, :presence => {:message => "Debe indicar la ubicación de la Tienda"}
+	validates_with UbicationValidator, fields: [:latitude,:longitude]
+
 	def init
 		self.picture  ||= "/photo_store/default_store.png"
 		self.active =  false if self.active.nil?

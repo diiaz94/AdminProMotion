@@ -247,53 +247,6 @@ function enmask(mask){
 var lat_selected="";
 var lng_selected="";
 
-function getUrlImage(model){
-		$.each($(".money"), function( index, e ) {
-  			$(e).val($(e).val().replaceAll(".","").replace(",","."));
-		});
-		if (model=="store") {
-			$(".form-with-img")
-			.append("<input type='hidden' name='store[latitude]' value='"+lat_selected+"' />")
-			.append("<input type='hidden' name='store[longitude]' value='"+lng_selected+"' />")
-			
-		};
-	if ($("#file").val().length>0){
-		var formData = new FormData(document.getElementById("file-img"));
-		 $.ajax({
-		 		beforeSend: function( xhr ) {
-				$("#modal-loader").modal({backdrop: 'static', keyboard: false}); 
-				},
-		        type:'POST',
-	            url: $("#file-img").attr('action'),
-	            data:formData,
-	            cache:false,
-	            contentType: false,
-	            processData: false,
-	            success:function(response){
-	                console.log("success");
-	                console.log(response);
-	                var url_image = response.status_code==200 ? response.data.thumb_url:"/photo_store/default.png";
-	                $(".form-with-img").append("<input type='text' name='"+model+"[picture]' value='"+url_image+"'>");         	
-	               	$(".form-with-img").submit();
-
-	            },
-	            error: function(data){
-	                console.log("error");
-	                console.log(data);
-			        $(".form-with-img").append("<input type='hidden' name='"+model+"[picture]' value='/photo_store/default.png'>");         	
-					$(".form-with-img").submit();
-	            },
-	            complete:function(){
-	            	$("#modal-loader").modal("hide");
-	            }
-	        });
-	}else{
-		if ($("#containerImage").attr("src")=="/photo_store/default.png") {
-        	$(".form-with-img").append("<input type='hidden' name='"+model+"[picture]' value='/photo_store/default.png'>");         	
-		}
-		$(".form-with-img").submit();
-	}
-}
 
 function showNoticeMessage(mjs){
 	noticemsj=mjs;
@@ -338,3 +291,76 @@ function show_detail(event){
     current_state=history.state;
 }
 
+
+function getAddress(lat,lng,f) {
+	var latlng = new google.maps.LatLng(lat, lng);
+	var geocoder = geocoder = new google.maps.Geocoder();
+	geocoder.geocode({ 'latLng': latlng },
+		function (results, status) {
+    		if (status == google.maps.GeocoderStatus.OK) {
+        		if (results[1]) {
+        			$(".form-no-submit")
+        			.append("<input type='hidden' name='store[address]' value='"+results[1].formatted_address+"' />");
+        		}
+    		}
+    		f.apply();
+		});
+}
+var form_model;
+function submitForm(m){
+		form_model=m;
+		$.each($(".money"), function( index, e ) {
+			$(e).val($(e).val().replaceAll(".","").replace(",","."));
+		});
+
+		if (form_model=="store") {
+			$(".form-no-submit")
+			.append("<input type='hidden' name='store[latitude]' value='"+lat_selected+"' />")
+			.append("<input type='hidden' name='store[longitude]' value='"+lng_selected+"' />")
+			getAddress(lat_selected,lng_selected,getUrlImage);
+		};
+		if (form_model=="promotion") {
+			getUrlImage();
+		};
+}
+
+
+function getUrlImage(){
+
+	if ($("#file").val().length>0){
+		var formData = new FormData(document.getElementById("file-img"));
+		 $.ajax({
+		 		beforeSend: function( xhr ) {
+				$("#modal-loader").modal({backdrop: 'static', keyboard: false}); 
+				},
+		        type:'POST',
+	            url: $("#file-img").attr('action'),
+	            data:formData,
+	            cache:false,
+	            contentType: false,
+	            processData: false,
+	            success:function(response){
+	                console.log("success");
+	                console.log(response);
+	                var url_image = response.status_code==200 ? response.data.thumb_url:"/photo_store/default.png";
+	                $(".form-with-img").append("<input type='text' name='"+form_model+"[picture]' value='"+url_image+"'>");         	
+	               	$(".form-with-img").submit();
+
+	            },
+	            error: function(data){
+	                console.log("error");
+	                console.log(data);
+			        $(".form-with-img").append("<input type='hidden' name='"+form_model+"[picture]' value='/photo_store/default.png'>");         	
+					$(".form-with-img").submit();
+	            },
+	            complete:function(){
+	            	$("#modal-loader").modal("hide");
+	            }
+	        });
+	}else{
+		if ($("#containerImage").attr("src")=="/photo_store/default.png") {
+        	$(".form-with-img").append("<input type='hidden' name='"+form_model+"[picture]' value='/photo_store/default.png'>");         	
+		}
+		$(".form-with-img").submit();
+	}
+}

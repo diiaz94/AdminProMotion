@@ -1,0 +1,9 @@
+       <!-- Main content -->
+        <section class="content">
+          <%= render 'promotions_table' %>
+        </section><!-- /.content -->
+
+<br>
+
+    <%= link_to 'Nueva Promoción', new_owner_commerce_store_promotion_path(@commerce,@store) ,class:"visible-xs btn btn-block btn-primary btn-lg"%>
+    <%= link_to 'Nueva Promoción', new_owner_commerce_store_promotion_path(@commerce,@store) ,class:"hidden-xs btn btn-primary "%>

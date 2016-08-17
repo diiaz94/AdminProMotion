@@ -11,53 +11,190 @@
                     <thead>
                       <tr>
                         <th>Nombre</th>
-                        <th class="hidden-xs">Descripción</th>
+                        <th>Categoría</th>
                       </tr>
                     </thead>
                     <tbody>
                     <% @stores.each_with_index do |store,index| %>
-                      <tr class="link" data-toggle="modal" data-target=<%="#modal-store-"+index.to_s%>>
+                      <tr class="detail-inside link <%=store.active ? 'tr-active' : 'tr-inactive' %>" data-toggle="modal" data-target=<%="#modal-store-"+store.id.to_s%> data-url="<%=owner_commerce_store_path(@commerce,store)%>">
                         <td><%= store.name %></td>
-                        <td class="hidden-xs"><%= store.description %></td>
+                        <td ><%= store.category.name %></td>
                       </tr>
                         <div class="example-modal">
-                          <div class="modal fade" id=<%="modal-store-"+index.to_s%>>
+                          <div class="modal fade detail-store" id=<%="modal-store-"+store.id.to_s%>>
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
                                   <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                                  <h4 class="modal-title">Información</h4>
+                                  <h4 class="modal-title">Información de <%=store.name%></h4>
                                 </div>
                                 <div class="modal-body">
                                   <div class="row">
-                                    <div class="col-xs-12">
+                                    <div class="col-md-12">
                                       <div class="box box-solid">
-                                        <div class="box-header with-border">
-                                          <i class="fa fa-text-width"></i>
-                                          <h3 class="box-title">Datos de la tienda</h3>
-                                        </div><!-- /.box-header -->
                                         <div class="box-body">
-                                          <dl>
-                                            <dt>Nombre:</dt>
-                                            <dd><%=store.name%></dd>
-                                            <dt>Descripción:</dt>
-                                            <dd><%=store.description%></dd>
-                                                                              
-                                          </dl>
-                                          
-                                       </div><!-- /.box-body -->
-                                      </div><!-- /.box -->
-                                    </div><!-- ./col -->
-                                  </div><!-- /.row -->
+                                          <div class="box-group" id=<%="accordion-"+store.id.to_s%>>
+                                            <!-- we are adding the .panel class so bootstrap.js collapse plugin detects it -->
+                                            <div class="panel box <%=store.active ? "box-success" : "box-warning"%> ">
+                                              <div class="box-header with-border">
+                                                <h4 class="box-title">
+                                                  <a data-toggle="collapse" data-parent=<%="#accordion-"+store.id.to_s%> href=<%="#collapse_1_"+store.id.to_s%>>
+                                                    Datos Generales
+                                                  </a>
+                                                </h4>
+                                              </div>
+                                              <div id=<%="collapse_1_"+store.id.to_s%> class="panel-collapse collapse in first">
+                                                <div class="box-body">
+                                                  <div class="row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                      <%= image_tag store.picture,class: "img-detail"%>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                      <dl class="dl-horizontal">
+                                                        <label>Nombre:</label>
+                                                        <span><%=store.name%></span><br>
+                                                        <label>Categoría:</label>
+                                                        <span><%=store.category.name%></span><br>
+                                                        <label>Estado:</label>
+                                                        <span><%=store.state%></span><br>
+                                                        <label>Dirección:</label>
+                                                        <span><%=store.address%></span><br>
+                                                        <label>Descripción:</label><br>
+                                                        <span><%=store.description%></span><br>
+                                                                                          
+                                                      </dl>
+
+                                                    </div>
+
+                                                  </div>
+
+                                                  
+                                               </div><!-- /.box-body -->
+                                              </div>
+                                            </div>
+                                            <div class="panel box <%=store.active ? "box-success" : "box-warning"%> ">
+                                              <div class="box-header with-border">
+                                                <h4 class="box-title">
+                                                  <a data-toggle="collapse" data-id=<%=store.id.to_s%> 
+                                                    data-latitude=<%=store.latitude.to_s%> data-longitude=<%=store.longitude.to_s%> class="open-map"  data-parent=<%="#accordion-"+store.id.to_s%> href=<%="#collapse_2_"+store.id.to_s%>>
+                                                    Ubicación
+                                                  </a>
+                                                </h4>
+                                              </div>
+                                              <div id=<%="collapse_2_"+store.id.to_s%> class="panel-collapse collapse">
+                                                <div class="box-body">
+                                                  <div id=<%="map-"+store.id.to_s%> style="width:100%;height:380px;">
+                                                 </div>
+                                                </div>
+                                              </div>
+                                            </div>                                                      
+                                            <div class="panel box <%=store.active ? "box-success" : "box-warning"%> ">
+                                              <div class="box-header with-border">
+                                                <h4 class="box-title">
+                                                  <a data-toggle="collapse"  data-parent=<%="#accordion-"+store.id.to_s%> href=<%="#collapse_3_"+store.id.to_s%>>
+                                                    Detalle de Beacon
+                                                  </a>
+                                                </h4>
+                                              </div>
+                                              <div id=<%="collapse_3_"+store.id.to_s%> class="panel-collapse collapse">
+                                                <div class="box-body">
+                                                 <div class="row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                      <%= image_tag "/photo_store/default_beacon.png",class: "img-detail"%>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                      <%if store.beacons.size>0 %>
+                                                        <dl class="dl-horizontal">
+                                                          <label>UUID:</label>
+                                                          <span><%=store.beacons.first.uuid%></span><br>
+                                                          <label>Major:</label>
+                                                          <span><%=store.beacons.first.major%></span><br>
+                                                          <label>Minor:</label>
+                                                          <span><%=store.beacons.first.minor%></span><br>
+                                                        </dl>
+                                                      <%else%>
+                                                        <div>Aun no posees un beacon asociado a esta tienda</div>
+                                                      <%end%>
+                                                    </div>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                            <div class="panel box <%=store.active ? "box-success" : "box-warning"%> ">
+                                              <div class="box-header with-border">
+                                                <h4 class="box-title">
+                                                  <a data-toggle="collapse"  data-parent=<%="#accordion-"+store.id.to_s%> href=<%="#collapse_4_"+store.id.to_s%>>
+                                                    Promociones
+                                                  </a>
+                                                </h4>
+                                              </div>
+                                              <div id=<%="collapse_4_"+store.id.to_s%> class="panel-collapse collapse">
+                                              <div class="box-body table-responsive no-padding">
+                                                <div class="panel panel-default">
+                                                <!-- Default panel contents -->
+                                            
+                                                  <div class="panel-heading">Últimas 5 Promociones</div>
+                                                  <div class="panel-body">
+                                                  <!-- List group -->
+                                                  <%if store.beacons.size>0 %>
+                                                    <ul class="list-group">
+                                                      <li class="list-group-item" style="rgb(245, 245, 245);font-weight: bold;">
+                                                        <div class="row">
+                                                          <div class="col-xs-4">
+                                                            <span >Título</span>
+                                                          </div>
+                                                          <div class="col-xs-4">
+                                                            <span >Precio</span>
+                                                          </div>
+                                                          <div class="col-xs-4">
+                                                            <span >Vence</span>
+                                                          </div>
+                                                        </div>
+                                                      </li>
+                                                      <% store.promotions.each do |promotion| %>
+                                                        <li class="list-group-item">
+                                                          <div class="row">
+                                                            <div class="col-xs-4">
+                                                              <span><%=promotion.title%></span>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                              <span class="money"><%=promotion.price%></span>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                              <span><%=promotion.until%></span>
+                                                            </div>
+                                                          </div>
+                                                        </li>
+                                                      <%end%>
+                                                    </ul>
+                                                    <%else%>
+                                                        <div>Aun no existen promociones asociadas a esta tienda</div>
+                                                    <%end%>
+                                                  </div>
+                                                </div>
+                                              </div>
+                                            </div>
+                                          </div>
+                                          <button data-url=<%=owner_commerce_store_path(@commerce,store)%> data-model="store" data-model-description="Tienda"  type="button" class="btn <%= store.active ? "btn-warning" : "btn-success"%> change_status"><%= store.active ? "Desactivar" : "Activar"%></button>
+                                        </div>
+                                        <!-- /.box-body -->
+                                      </div>
+                                      <!-- /.box -->
+                                    </div>
+                                    <!-- /.col -->
+                                  </div>
+                                  <!-- /.row -->
+                                  <!-- END ACCORDION-->
                                 </div>
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                                   
-                                  <button data-url=<%=owner_commerce_stores_path(@commerce)%> data-id=<%=store.id%> type="button" class="btn btn-danger delete-record">Eliminar</button>
+                                  <button data-url=<%=owner_commerce_stores_path(@commerce)%> data-id=<%=store.id%> type="button" class="btn btn-danger delete-record">
+                                     <span class="glyphicon glyphicon-trash" aria-hispanen="true"></span> Eliminar</button>
                                   <button type="button" class="btn btn-primary" aria-label="Left Align" 
                                     onclick="window.location.href=
-                                    '<%=edit_owner_commerce_store_path(@commerce.slug,store) %>'">
-                                    <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span> Editar &nbsp;
+                                    '<%=edit_owner_commerce_store_path(@commerce,store) %>'">
+                                    <span class="glyphicon glyphicon-pencil" aria-hispanen="true"></span> Editar &nbsp;
                                   </button>
                                 </div>
                               </div><!-- /.modal-content -->
@@ -69,7 +206,7 @@
                     <tfoot>
                       <tr>
                         <th>Nombre</th>
-                        <th class="hidden-xs">Descripción</th>
+                        <th>Categoría</th>
                       </tr>
                     </tfoot>
                   </table>
@@ -91,5 +228,76 @@
           } ],
           stateSave: true
         });
+        var store_id = "<%=@store!=nil ? @store.id.to_s : nil%>"
+        if (store_id.trim().length>0) {
+          $("#modal-store-"+store_id).modal("show")
+        }
+        var current_state={target:null};
+        window.onpopstate = function(e){
+           if(e.state){
+                if(e.state.target && current_state.target!=e.state.target){
+                  current_state=e.state;
+                  $.each($(".detail-store"), function( index, element ) {
+                    $(element).modal("hide");
+                  });
+                  $.each($(".modal-backdrop"), function( index, element ) {
+                    $(element).remove()
+                  });
+                  setTimeout(function(){$(e.state.target).modal("show");},0)
+                }                
+            }
+        };
+        $('.detail-store').on('hidden.bs.modal', function () {
+          var element=$(this);
+          $(element.find(".box-group .in")).collapse("hide");
+          $(element.find(".box-group .first")).collapse("show");
+          mapWasOpen=false;
+        });
+        $(".open-map").on("click",openMap)
+        mapsInitialized=[];
+        mapWasOpen=false;
+        //var store_map=null;
+        function openMap(){
+          if (!mapWasOpen) {
+            var element=$(this)
+            var lat = $(element).data("latitude");
+            var lon = $(element).data("longitude");
+            //var lat = 18.466817;
+            //var lon = -69.913237;
+            var id = element.data("id");
+            console.log("id::"+id+" latitude::"+lat+" longitude::"+lon)
+              
+            if(store_map==null){
+              $("#map-"+id).append("<div id='map' style='width:100%;height:380px;'></div>")
+              initMap();
+              mapInitialized=id;
+            }else{
+              $("#map-"+id).html("");
+              $("#map-"+id).append(store_map.getDiv());
+            }
+            changeCenter(lat,lon);
+            mapWasOpen=true;
+          }
+        }
+
+        function initMap() {
+            var mapProp = {
+              zoom:19,
+              mapTypeId:google.maps.MapTypeId.ROADMAP,
+              scrollwheel: false
+            };
+              store_map=new google.maps.Map(document.getElementById("map"), mapProp);
+        }
+        function changeCenter(lat,lon){
+          myCenter=new google.maps.LatLng(lat,lon);
+          store_map.setCenter(myCenter);
+          if(marker!=null) marker.setMap(null);
+          marker=new google.maps.Marker({
+                position:myCenter,
+                animation:google.maps.Animation.BOUNCE
+              });
+          marker.setMap(store_map);
+        }
+
       });
 </script>

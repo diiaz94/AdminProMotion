@@ -27,9 +27,10 @@ Rails.application.routes.draw do
 
   namespace "owner" do
     resources :commerces do
-      resources :stores
+      resources :stores do
+        resources :promotions
+      end
     end
-    resources :promotions
     resources :beacons
 
   end

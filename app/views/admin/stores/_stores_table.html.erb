@@ -4,7 +4,7 @@
 
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Lista de Tiendas<%=@commerce ? " de "+@commerce.nombre : "" %></h3>
+                  <h3 class="box-title">Lista de Tiendas<%=@commerce ? " de "+@commerce.name : "" %></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table id="stores_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
@@ -98,7 +98,25 @@
                                               </div>
                                               <div id=<%="collapse_3_"+store.id.to_s%> class="panel-collapse collapse">
                                                 <div class="box-body">
-                                                 
+                                                 <div class="row">
+                                                    <div class="col-xs-12 col-sm-6">
+                                                      <%= image_tag "/photo_store/default_beacon.png",class: "img-detail"%>
+                                                    </div>
+                                                    <div class="col-xs-12 col-sm-6">
+                                                      <%if store.beacons.size>0 %>
+                                                        <dl class="dl-horizontal">
+                                                          <label>UUID:</label>
+                                                          <span><%=store.beacons.first.uuid%></span><br>
+                                                          <label>Major:</label>
+                                                          <span><%=store.beacons.first.major%></span><br>
+                                                          <label>Minor:</label>
+                                                          <span><%=store.beacons.first.minor%></span><br>
+                                                        </dl>
+                                                      <%else%>
+                                                        <div>Aun no posees un beacon asociado a esta tienda</div>
+                                                      <%end%>
+                                                    </div>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>
@@ -111,14 +129,48 @@
                                                 </h4>
                                               </div>
                                               <div id=<%="collapse_4_"+store.id.to_s%> class="panel-collapse collapse">
-                                                <div class="box-body">
-                                                  Anim pariatur cliche reprehenderit, enim eiusmod high life accusamus terry richardson ad squid. 3
-                                                  wolf moon officia aute, non cupidatat skateboard dolor brunch. Food truck quinoa nesciunt laborum
-                                                  eiusmod. Brunch 3 wolf moon tempor, sunt aliqua put a bird on it squid single-origin coffee nulla
-                                                  assumenda shoreditch et. Nihil anim keffiyeh helvetica, craft beer labore wes anderson cred
-                                                  nesciunt sapiente ea proident. Ad vegan excepteur butcher vice lomo. Leggings occaecat craft beer
-                                                  farm-to-table, raw denim aesthetic synth nesciunt you probably haven't heard of them accusamus
-                                                  labore sustainable VHS.
+                                              <div class="box-body table-responsive no-padding">
+                                                <div class="panel panel-default">
+                                                <!-- Default panel contents -->
+                                            
+                                                  <div class="panel-heading">Últimas 5 Promociones</div>
+                                                  <div class="panel-body">
+                                                  <!-- List group -->
+                                                  <%if store.beacons.size>0 %>
+                                                    <ul class="list-group">
+                                                      <li class="list-group-item" style="rgb(245, 245, 245);font-weight: bold;">
+                                                        <div class="row">
+                                                          <div class="col-xs-4">
+                                                            <span >Título</span>
+                                                          </div>
+                                                          <div class="col-xs-4">
+                                                            <span >Precio</span>
+                                                          </div>
+                                                          <div class="col-xs-4">
+                                                            <span >Vence</span>
+                                                          </div>
+                                                        </div>
+                                                      </li>
+                                                      <% store.promotions.each do |promotion| %>
+                                                        <li class="list-group-item">
+                                                          <div class="row">
+                                                            <div class="col-xs-4">
+                                                              <span><%=promotion.title%></span>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                              <span class="money"><%=promotion.price%></span>
+                                                            </div>
+                                                            <div class="col-xs-4">
+                                                              <span><%=promotion.until%></span>
+                                                            </div>
+                                                          </div>
+                                                        </li>
+                                                      <%end%>
+                                                    </ul>
+                                                    <%else%>
+                                                        <div>Aun no existen promociones asociadas a esta tienda</div>
+                                                    <%end%>
+                                                  </div>
                                                 </div>
                                               </div>
                                             </div>

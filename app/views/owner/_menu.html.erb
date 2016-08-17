@@ -35,9 +35,21 @@
                                 <a href="<%=owner_commerce_stores_path(commerce)%>"><i class="fa fa-search-plus"></i> Ver Todas</a>
                               </li> 
                               <%commerce.stores.each do |store|%>
-                                <li>
-                                <a href="<%=owner_commerce_store_path(commerce,store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> <%=store.name%></a>
-                              </li> 
+                                <li class="treeview">
+                                  <a href="#">
+                                    <i class="fa fa-building-o"></i> 
+                                    <span><%=store.name%></span> 
+                                    <i class="fa fa-angle-left pull-right"></i>
+                                  </a>
+                                  <ul class="treeview-menu">
+                                    <li>
+                                      <a href="<%=owner_commerce_store_path(commerce,store)%>"><i class="glyphicon glyphicon-shopping-cart"></i> Ver Tienda</a>
+                                    </li>
+                                    <li>
+                                      <a href="<%=owner_commerce_store_promotions_path(commerce,store)%>"><i class="glyphicon fa fa-star-o"></i> Ver Promociones</a>
+                                    </li>
+                                  </ul>
+                                </li>
                               <%end%> 
                             <%end%>
                             <li>

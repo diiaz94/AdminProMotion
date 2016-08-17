@@ -1,6 +1,5 @@
 class Admin::StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
-  before_action :set_commerce, only:[:new_store_of_commerce]
   before_action :set_caracas_center, only: [:new,:edit]
   # GET /stores
   # GET /stores.json
@@ -35,7 +34,8 @@ class Admin::StoresController < ApplicationController
     #puts "latlng****::"+latlng
     #@store.latitude = latlng[0]
     #@store.longitude = latlng[1]
-    #puts "AQUI CDTMMMM *****"+ @store.to_s 
+    #puts "AQUI CDTMMMM *****"+ @store.to_s
+    
     respond_to do |format|
       if @store.save
         format.html { redirect_to admin_store_path(@store), notice: 'Tienda creada exitosamente.' }
@@ -83,8 +83,8 @@ class Admin::StoresController < ApplicationController
 
   private
     def set_caracas_center
-      @caracas_latitude = "10.4762922"
-      @caracas_longitude = "-66.9088739" 
+      @caracas_latitude = "10.477136197955849"
+      @caracas_longitude = "-66.90423904282227" 
       
     end
     # Use callbacks to share common setup or constraints between actions.

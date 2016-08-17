@@ -53,7 +53,7 @@ html, body {
   width: 345px;
 }
 </style>  
-<%= form_for(@store,url: (@store.new_record? ? admin_stores_url : admin_store_url),:html => {:class => "form-with-img"}) do |f| %>
+<%= form_for(@store,url: (@store.new_record? ? admin_stores_url : admin_store_url),:html => {:class => "form-with-img form-no-submit"}) do |f| %>
   <script type="text/javascript">
    var errorsArray=[] ;
   <% @store.errors.each do |atributo, mensaje| %>
@@ -133,9 +133,9 @@ html, body {
       <div class="row">
           <div class="col-xs-12 col-sm-10 col-md-8 col-lg-6">
             <label>Ubicación</label><span>&nbsp;</span>
-            <button id="add_marker" type="button" class="btn btn-warning btn-xs <%=@store.longitude ? 'hidden' : '' %>">Agregar Marcador</button>
-            <button id="remove_marker" type="button" class="btn btn-danger btn-xs <%=@store.longitude ? '' : 'hidden' %>" >Quitar Marcador</button>
-            <button id="go_to_marker" type="button" class="btn btn-success btn-xs <%=@store.longitude ? '' : 'hidden' %>" >Ir al Marcador</button>
+            <button id="add_marker" type="button" class="btn btn-warning btn-xs hidden">Agregar Marcador</button>
+            <button id="remove_marker" type="button" class="btn btn-danger btn-xs hidden" >Quitar Marcador</button>
+            <button id="go_to_marker" type="button" class="btn btn-success btn-xs hidden" >Ir al Marcador</button>
             <button id="restaurate_marker" type="button" class="btn btn-primary btn-xs hidden" >Restaurar Marcador</button>
             
             <div class="row">
@@ -171,8 +171,8 @@ html, body {
   </div><!-- /.box -->
   
     <div class="box-footer">
-      <button type="button" style="margin-top:5px;" class="visible-xs btn btn-block btn-primary btn-lg" aria-label="Left Align" onclick="getUrlImage('store');"><%= (@store.new_record? ? "Crear Tienda" : "Actualizar Tienda")%></button>
-    <button type="button" style="margin-top:5px;" class="hidden-xs btn btn-primary" aria-label="Left Align" onclick="getUrlImage('store');"><%= (@store.new_record? ? "Crear Tienda" : "Actualizar Tienda")%></button>
+      <button type="button" style="margin-top:5px;" class="visible-xs btn btn-block btn-primary btn-lg" aria-label="Left Align" onclick="submitForm('store');"><%= (@store.new_record? ? "Crear Tienda" : "Actualizar Tienda")%></button>
+    <button type="button" style="margin-top:5px;" class="hidden-xs btn btn-primary" aria-label="Left Align" onclick="submitForm('store');"><%= (@store.new_record? ? "Crear Tienda" : "Actualizar Tienda")%></button>
     </div>
 <% end %>
 
@@ -317,20 +317,32 @@ function changeStoreMarker(center){
       lng_selected = this.getPosition().lng();
       console.log(this.getPosition().lat());
       console.log(this.getPosition().lng());
+      if (new_record != "true")
       $("#restaurate_marker").removeClass("hidden");
     });
 
 }
 function initMapOfStore(){
-  if (new_record == true) {
+  console.log("new_record::"+new_record);
+  if (new_record == "true") {
     console.log("new_record");
+    lat_selected="";
+    lng_selected="";
+    store_map.setZoom(13);
+    $("#remove_marker").addClass("hidden");
+    $("#go_to_marker").addClass("hidden");
+    $("#add_marker").removeClass("hidden");
+    $("#restaurate_marker").addClass("hidden");
   }else{
     console.log("old_record");
     console.log(JSON.stringify(store_center)+store_center.longitude);
     store_map.setCenter(new google.maps.LatLng(store_center.latitude,store_center.longitude));
     changeStoreMarker(new google.maps.LatLng(store_center.latitude,store_center.longitude));
     store_map.setZoom(19);
-
+    $("#remove_marker").removeClass("hidden");
+    $("#go_to_marker").removeClass("hidden");
+    $("#add_marker").addClass("hidden");
+    $("#restaurate_marker").addClass("hidden");
   }
 }
 </script>

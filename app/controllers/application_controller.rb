@@ -8,6 +8,14 @@ class ApplicationController < ActionController::Base
 	    	@commerce = current_user.commerces.friendly.find(params[:commerce_id])
 		end
 	end
+	def set_store
+		if params[:commerce_id]
+	    	@commerce = current_user.commerces.friendly.find(params[:commerce_id])
+	    	if params[:store_id]
+	    		@store = @commerce.stores.friendly.find(params[:store_id])
+			end
+		end
+	end
 	def admin_role
 		return	Role.where(nombre:"Admin")[0].id
 	end

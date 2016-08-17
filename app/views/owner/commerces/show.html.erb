@@ -1,15 +1,19 @@
+<p id="notice"><%= notice %></p>
+
 <p>
-  <strong>Descripcion:</strong>
+  <strong>Name:</strong>
+  <%= @commerce.name %>
+</p>
+
+<p>
+  <strong>Location:</strong>
+  <%= @commerce.location %>
+</p>
+
+<p>
+  <strong>Description:</strong>
   <%= @commerce.description %>
 </p>
 
-<section class="content">
- <%= render 'owner/stores/stores_table' %>
-
-
-</section><!-- /.content -->
-
-
-
-
-
+<%= link_to 'Edit', edit_commerce_path(@commerce) %> |
+<%= link_to 'Back', commerces_path %>

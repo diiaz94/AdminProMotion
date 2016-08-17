@@ -1,6 +1,5 @@
 class Owner::CommercesController < ApplicationController
   before_action :set_commerce, only: [:show, :edit, :update, :destroy]
-  
   # GET /commerces
   # GET /commerces.json
   def index
@@ -26,7 +25,7 @@ class Owner::CommercesController < ApplicationController
   # POST /commerces.json
   def create
     @commerce = Commerce.new(commerce_params)
-    @commerce.user_id = current_user.id
+    @commerce.user=current_user
     respond_to do |format|
       if @commerce.save
         format.html { redirect_to owner_commerces_path, notice: 'Comercio creado exitosamente.' }
@@ -62,6 +61,7 @@ class Owner::CommercesController < ApplicationController
       format.json { head :no_content }
     end
   end
+
   private
     # Use callbacks to share common setup or constraints between actions.
     def set_commerce

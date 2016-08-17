@@ -1,0 +1,139 @@
+          <div class="row">
+            <div class="col-xs-12">
+
+
+              <div class="box">
+                <div class="box-header">
+                  <h3 class="box-title">Lista de Promociones</h3>
+                </div><!-- /.box-header -->
+                <div class="box-body">
+                  <table id="promotions_table" class="display table table-bordered table-striped" cellspacing="0" wilabelh="100%">
+                    <thead>
+                      <tr>
+                        <th>Código</th>
+                        <th>Titulo</th>
+                        <th>Precio</th>
+                        <th>Vence</th>
+                      </tr>
+                    </thead>
+                    <tbody>
+                    <% @promotions.each_with_index do |promotion,index| %>
+                      <tr class="detail-inside link <%=promotion.active ? 'tr-active' : 'tr-inactive' %>" data-toggle="modal" data-target=<%="#modal-promotion-"+promotion.id.to_s%> data-url="<%=admin_promotion_path(promotion)%>">
+                        <td><%= promotion.id %></td>
+                        <td ><%= promotion.title %></td>
+                        <td class="money"><%= promotion.price %></td>
+                        <td ><%= promotion.until %></td>
+                      </tr>
+                        <div class="example-modal">
+                          <div class="modal fade detail-promotion" id=<%="modal-promotion-"+promotion.id.to_s%>>
+                            <div class="modal-dialog">
+                              <div class="modal-content">
+                                <div class="modal-header">
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hispanen="true">&times;</span></button>
+                                  <h4 class="modal-title">Información</h4>
+                                </div>
+                                <div class="modal-body">
+                                  <div class="row">
+                                    <div class="col-xs-12">
+                                      <div class="box box-solid">
+                                        <div class="box-header with-border">
+                                          <i class="fa fa-text-wilabelh"></i>
+                                          <h3 class="box-title">Datos de la promoción</h3>
+                                        </div><!-- /.box-header -->
+                                        <div class="box-body">
+                                          <div class="row">
+                                            <div class="col-xs-12 col-sm-6">
+                                              <%= image_tag promotion.picture,class: "img-detail"%>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6">
+                                              <dl class="dl-horizontal">
+                                                <label>Codigo:</label>
+                                                <span><%=promotion.id%></span><br>
+                                                <label>Título:</label>
+                                                <span><%=promotion.title%></span><br>
+                                                <label>Precio:</label>
+                                                <span class="money"><%=promotion.price%></span><br>
+                                                <label>Vence:</label>
+                                                <span><%=promotion.until%></span><br>
+                                                <label>Estado:</label>
+                                                <span><%=promotion.state%></span><br>
+                                                <label>Descripción:</label><br>
+                                                <span><%=promotion.description%></span><br>
+                                                                                  
+                                              </dl>
+
+                                            </div>
+
+                                          </div>
+
+                                        <button data-url=<%=admin_promotion_path(promotion)%> data-model="promotion" data-model-description="Promoción"  type="button" class="btn <%= promotion.active ? "btn-warning" : "btn-success"%> change_status"><%= promotion.active ? "Desactivar" : "Activar"%></button>
+                                       </div><!-- /.box-body -->
+                                      </div><!-- /.box -->
+                                    </div><!-- ./col -->
+                                  </div><!-- /.row -->
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
+                                  
+                                  <button data-url=<%=admin_promotions_path%> data-id=<%=promotion.id%> type="button" class="btn btn-danger delete-record">
+                                     <span class="glyphicon glyphicon-trash" aria-hispanen="true"></span> Eliminar</button>
+                                  <button type="button" class="btn btn-primary" aria-label="Left Align" 
+                                    onclick="window.location.href=
+                                    '<%=edit_admin_promotion_path(promotion) %>'">
+                                    <span class="glyphicon glyphicon-pencil" aria-hispanen="true"></span> Editar &nbsp;
+                                  </button>
+                                </div>
+                              </div><!-- /.modal-content -->
+                            </div><!-- /.modal-dialog -->
+                          </div><!-- /.modal -->
+                        </div><!-- /.example-modal -->
+                      <% end %>
+                    </tbody>
+                    <tfoot>
+                      <tr>
+                        <th>Código</th>
+                        <th>Titulo</th>
+                        <th>Precio</th>
+                        <th>Vence</th>
+                      </tr>
+                    </tfoot>
+                  </table>
+                </div><!-- /.box-body -->
+              </div><!-- /.box -->
+            </div><!-- /.col -->
+          </div><!-- /.row -->
+
+      <script>
+      $(function () {
+        $("#promotions_table").DataTable({
+          "language": {
+            "url": "/plugins/datatables/dataTables.spanish.lang"
+          },
+          "columnDefs": [ {
+          "targets": 'no-sort',
+          "orderable": false,
+          "searchable": false
+          } ],
+          stateSave: true
+        });
+        var promotion_id = "<%=@promotion!=nil ? @promotion.id.to_s : nil%>"
+        if (promotion_id.trim().length>0) {
+          $("#modal-promotion-"+promotion_id).modal("show")
+        }
+        var current_state={target:null};
+        window.onpopstate = function(e){
+           if(e.state){
+                if(e.state.target && current_state.target!=e.state.target){
+                  current_state=e.state;
+                  $.each($(".detail-promotion"), function( index, element ) {
+                    $(element).modal("hide");
+                  });
+                  $.each($(".modal-backdrop"), function( index, element ) {
+                    $(element).remove()
+                  });
+                  setTimeout(function(){$(e.state.target).modal("show");},0)
+                }                
+            }
+        };
+      });
+      </script>
