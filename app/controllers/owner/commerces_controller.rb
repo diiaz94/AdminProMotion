@@ -9,7 +9,8 @@ class Owner::CommercesController < ApplicationController
   # GET /commerces/1
   # GET /commerces/1.json
   def show
-    @stores = @commerce.stores
+    @commerces = current_user.commerces
+    render "index"
   end
 
   # GET /commerces/new

@@ -9,7 +9,8 @@ class Admin::CommercesController < ApplicationController
   # GET /commerces/1
   # GET /commerces/1.json
   def show
-    @stores = @commerce.stores
+    @commerces = Commerce.all
+    render "index"
   end
 
   # GET /commerces/new
