@@ -31,8 +31,13 @@ Rails.application.routes.draw do
         resources :promotions
       end
     end
+  end
+  
+  namespace "api" do
+    resources :commerces
+    resources :stores
+    resources :promotions
     resources :beacons
-
   end
 
   get 'my_profile' => 'users#my_profile', as: :my_profile

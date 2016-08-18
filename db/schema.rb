@@ -67,7 +67,7 @@ ActiveRecord::Schema.define(version: 20160810203928) do
     t.boolean  "active"
     t.string   "picture"
     t.float    "price"
-    t.date     "until"
+    t.string   "until"
     t.string   "slug"
     t.integer  "store_id"
     t.datetime "created_at",  null: false

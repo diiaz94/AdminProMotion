@@ -136,7 +136,7 @@
                                                   <div class="panel-heading">Últimas 5 Promociones</div>
                                                   <div class="panel-body">
                                                   <!-- List group -->
-                                                  <%if store.beacons.size>0 %>
+                                                  <%if store.promotions.size>0 %>
                                                     <ul class="list-group">
                                                       <li class="list-group-item" style="rgb(245, 245, 245);font-weight: bold;">
                                                         <div class="row">
@@ -151,7 +151,7 @@
                                                           </div>
                                                         </div>
                                                       </li>
-                                                      <% store.promotions.each do |promotion| %>
+                                                      <% store.promotions.last(5).each do |promotion| %>
                                                         <li class="list-group-item">
                                                           <div class="row">
                                                             <div class="col-xs-4">

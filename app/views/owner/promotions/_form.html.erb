@@ -1,4 +1,4 @@
-<%= form_for(@promotion,url: (@promotion.new_record? ? admin_promotions_url : admin_promotion_url),:html => {:class => "form-with-img form-no-submit"}) do |f| %>
+<%= form_for(@promotion,url: (@promotion.new_record? ? owner_commerce_store_promotions_url : owner_commerce_store_promotion_url),:html => {:class => "form-with-img form-no-submit"}) do |f| %>
   <script type="text/javascript">
    var errorsArray=[] ;
   <% @promotion.errors.each do |atributo, mensaje| %>
@@ -80,14 +80,7 @@
             </div>
         </div>
       </div>
-       <div class="row">
-        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
-          <div class="form-group">
-            <%= f.label :store_id, "Tienda asociada" %>*<br>
-            <%= f.select :store_id, options_for_select(Store.all.pluck(:name,:id),( @promotion.store ? @promotion.store_id : "" )),{},{class:"form-control select2"}%>
-          </div>
-        </div>
-      </div>         
+       
 
     </div><!-- /.box-body -->
   </div><!-- /.box -->

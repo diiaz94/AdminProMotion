@@ -1,6 +1,8 @@
 class Admin::StoresController < ApplicationController
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :set_caracas_center, only: [:new,:edit]
+  after_action :set_date_created_at, only: [:create]
+  after_action :set_date_updated_at, only: [:update]
   # GET /stores
   # GET /stores.json
   def index
@@ -38,7 +40,7 @@ class Admin::StoresController < ApplicationController
     
     respond_to do |format|
       if @store.save
-        format.html { redirect_to admin_store_path(@store), notice: 'Tienda creada exitosamente.' }
+        format.html { redirect_to admin_stores_path, notice: 'Tienda creada exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -61,7 +63,7 @@ class Admin::StoresController < ApplicationController
     respond_to do |format|
       @store.slug=nil
       if @store.update(store_params)
-        format.html { redirect_to admin_store_path(@store), notice: 'Tienda actualizada exitosamente.' }
+        format.html { redirect_to admin_stores_path, notice: 'Tienda actualizada exitosamente.' }
         msg = { :status => "ok", :message => "Success!", :store => @store }
         format.json  { render :json => msg } # don't do msg.to_json
       else
@@ -91,7 +93,26 @@ class Admin::StoresController < ApplicationController
     def set_store
       @store = Store.friendly.find(params[:id])
     end
-
+    def set_date_created_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      @store.created_at = time ? time : (fecha ? fecha : Date.today)
+      @store.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @store.save
+    end
+    def set_date_updated_at
+      if params[:fecha]
+        f = JSON.parse(params[:fecha])
+        fecha = DateTime.new(f["anio"], f["mes"], f["dia"],  f["hora"],  f["min"],  f["seg"])
+      end
+      time = getCurrentTime
+      puts @fecha.to_s
+      @store.updated_at = time ? time : (fecha ? fecha : Date.today)
+      @store.save
+    end    
     # Never trust parameters from the scary internet, only allow the white list through.
     def store_params
       params.require(:store).permit(:name, :address, :description, :commerce_id,:category_id,:picture, :active,:email,:phone,:latitude,:longitude)

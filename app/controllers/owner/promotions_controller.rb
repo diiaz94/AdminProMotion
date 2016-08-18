@@ -29,10 +29,10 @@ class Owner::PromotionsController < ApplicationController
   # POST /promotions.json
   def create
     @promotion = Promotion.new(promotion_params)
-
+    @promotion.store=@store
     respond_to do |format|
       if @promotion.save
-        format.html { redirect_to admin_promotions_path, notice: 'Promoción creada exitosamente.' }
+        format.html { redirect_to owner_commerce_store_promotions_path, notice: 'Promoción creada exitosamente.' }
         format.json { render :show, status: :created, location: @promotion }
       else
         format.html { render :new }
@@ -47,7 +47,7 @@ class Owner::PromotionsController < ApplicationController
     respond_to do |format|
       @promotion.slug=nil
       if @promotion.update(promotion_params)
-        format.html { redirect_to admin_promotions_path, notice: 'Promoción actualizada exitosamente.' }
+        format.html { redirect_to owner_commerce_store_promotions_path, notice: 'Promoción actualizada exitosamente.' }
         msg = { :status => "ok", :message => "Success!", :promotion => @promotion }
         format.json  { render :json => msg } # don't do msg.to_json
       else
@@ -66,9 +66,6 @@ class Owner::PromotionsController < ApplicationController
       format.json { head :no_content }
     end
   end
-  def activation
-    
-  end
 
   private
     # Use callbacks to share common setup or constraints between actions.
@@ -78,6 +75,6 @@ class Owner::PromotionsController < ApplicationController
 
     # Never trust parameters from the scary internet, only allow the white list through.
     def promotion_params
-      params.require(:promotion).permit(:title, :description, :picture, :price,:store_id,:until,:active)
+      params.require(:promotion).permit(:title, :description, :picture, :price,:until,:active)
     end
 end

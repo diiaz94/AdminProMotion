@@ -53,7 +53,7 @@ html, body {
   width: 345px;
 }
 </style>  
-<%= form_for(@store,url: (@store.new_record? ? owner_commerce_stores_url : owner_commerce_store_url),:html => {:class => "form-with-img form-no-submit"}) do |f| %>
+<%= form_for(@store,url: (@store.new_record? ? owner_commerce_stores_url : owner_commerce_store_url),:html => {:class => "form-with-img form-no-submit submit_client_date"}) do |f| %>
   <script type="text/javascript">
    var errorsArray=[] ;
   <% @store.errors.each do |atributo, mensaje| %>
@@ -117,7 +117,7 @@ html, body {
                     <div class="input-group-addon">
                       <i class="fa fa-phone"></i>
                     </div>
-                    <%= f.text_field :phone,class:"form-control", "data-inputmask" => '"mask": "(9999) 999-9999"'  %>
+                    <%= f.text_field :phone,class:"form-control", "data-inputmask" => '"mask": "+99 (9999) 999-9999"'  %>
                   </div><!-- /.input group -->
                 </div>
               </div>

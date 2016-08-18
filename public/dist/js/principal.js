@@ -224,6 +224,7 @@ function unmask(v){
 return v.replaceAll(".","").replaceAll(",","");
 }
 function enmask(mask){
+	mask=mask.indexOf(".")==-1?mask+"0":mask;
 	var result=unmask(mask)
 	if (result.length>2) {
 		result=result.insert(result.length-2, ",");
@@ -308,6 +309,7 @@ function getAddress(lat,lng,f) {
 }
 var form_model;
 function submitForm(m){
+		$("#modal-loader").modal({backdrop: 'static', keyboard: false}); 
 		form_model=m;
 		$.each($(".money"), function( index, e ) {
 			$(e).val($(e).val().replaceAll(".","").replace(",","."));
@@ -342,7 +344,7 @@ function getUrlImage(){
 	            success:function(response){
 	                console.log("success");
 	                console.log(response);
-	                var url_image = response.status_code==200 ? response.data.thumb_url:"/photo_store/default.png";
+	                var url_image = response.status_code==200 ? response.data.thumb_url:window.location.origin+"/photo_store/default_"+form_model+".png";
 	                $(".form-with-img").append("<input type='text' name='"+form_model+"[picture]' value='"+url_image+"'>");         	
 	               	$(".form-with-img").submit();
 
@@ -350,7 +352,7 @@ function getUrlImage(){
 	            error: function(data){
 	                console.log("error");
 	                console.log(data);
-			        $(".form-with-img").append("<input type='hidden' name='"+form_model+"[picture]' value='/photo_store/default.png'>");         	
+			        $(".form-with-img").append("<input type='hidden' name='"+form_model+"[picture]' value='"+window.location.origin+"/photo_store/default_"+form_model+".png'>");         	
 					$(".form-with-img").submit();
 	            },
 	            complete:function(){
@@ -358,8 +360,8 @@ function getUrlImage(){
 	            }
 	        });
 	}else{
-		if ($("#containerImage").attr("src")=="/photo_store/default.png") {
-        	$(".form-with-img").append("<input type='hidden' name='"+form_model+"[picture]' value='/photo_store/default.png'>");         	
+		if ($("#containerImage").attr("src")=="/photo_store/default_"+form_model+".png") {
+        	$(".form-with-img").append("<input type='hidden' name='"+form_model+"[picture]' value='"+window.location.origin+"/photo_store/default_"+form_model+".png'>");         	
 		}
 		$(".form-with-img").submit();
 	}

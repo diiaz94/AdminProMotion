@@ -1,0 +1,1 @@
+json.array! promotions, partial: 'api/promotions/promotion', as: :promotion

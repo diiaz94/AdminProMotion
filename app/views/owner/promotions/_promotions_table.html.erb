@@ -18,7 +18,7 @@
                     </thead>
                     <tbody>
                     <% @promotions.each_with_index do |promotion,index| %>
-                      <tr class="detail-inside link <%=promotion.active ? 'tr-active' : 'tr-inactive' %>" data-toggle="modal" data-target=<%="#modal-promotion-"+promotion.id.to_s%> data-url="<%=admin_promotion_path(promotion)%>">
+                      <tr class="detail-inside link <%=promotion.active ? 'tr-active' : 'tr-inactive' %>" data-toggle="modal" data-target=<%="#modal-promotion-"+promotion.id.to_s%> data-url="<%=owner_commerce_store_promotion_path(@commerce,@store,promotion)%>">
                         <td><%= promotion.id %></td>
                         <td ><%= promotion.title %></td>
                         <td class="money"><%= promotion.price %></td>
@@ -66,7 +66,7 @@
 
                                           </div>
 
-                                        <button data-url=<%=admin_promotion_path(promotion)%> data-model="promotion" data-model-description="Promoción"  type="button" class="btn <%= promotion.active ? "btn-warning" : "btn-success"%> change_status"><%= promotion.active ? "Desactivar" : "Activar"%></button>
+                                        <button data-url=<%=owner_commerce_store_promotion_path(@commerce,@store,promotion)%> data-model="promotion" data-model-description="Promoción"  type="button" class="btn <%= promotion.active ? "btn-warning" : "btn-success"%> change_status"><%= promotion.active ? "Desactivar" : "Activar"%></button>
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
                                     </div><!-- ./col -->
@@ -75,11 +75,11 @@
                                 <div class="modal-footer">
                                   <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cerrar</button>
                                   
-                                  <button data-url=<%=admin_promotions_path%> data-id=<%=promotion.id%> type="button" class="btn btn-danger delete-record">
+                                  <button data-url=<%=owner_commerce_store_promotions_path(@commerce,@store)%> data-id=<%=promotion.id%> type="button" class="btn btn-danger delete-record">
                                      <span class="glyphicon glyphicon-trash" aria-hispanen="true"></span> Eliminar</button>
                                   <button type="button" class="btn btn-primary" aria-label="Left Align" 
                                     onclick="window.location.href=
-                                    '<%=edit_admin_promotion_path(promotion) %>'">
+                                    '<%=edit_owner_commerce_store_promotion_path(@commerce,@store,promotion) %>'">
                                     <span class="glyphicon glyphicon-pencil" aria-hispanen="true"></span> Editar &nbsp;
                                   </button>
                                 </div>
