@@ -1,4 +1,5 @@
 class Admin::StoresController < ApplicationController
+  before_action :require_admin_login
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :set_caracas_center, only: [:new,:edit]
   after_action :set_date_created_at, only: [:create]

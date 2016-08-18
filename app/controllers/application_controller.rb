@@ -78,7 +78,16 @@ class ApplicationController < ActionController::Base
 			return  [0,0] 
 		end
 	end
-
+	def require_admin_login
+		if current_user.role.name!="Admin"
+			redirect_to root_path, alert: "No estás autorizado para ver esta información"
+		end
+	end
+	def require_owner_login
+		if current_user.role.name!="Owner"
+			redirect_to root_path, alert: "No estás autorizado para ver esta información"
+		end
+	end
     private
 	def not_authenticated
 	  redirect_to login_path, alert: "Debes iniciar sesión primero"

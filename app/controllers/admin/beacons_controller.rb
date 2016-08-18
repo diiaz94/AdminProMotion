@@ -1,4 +1,5 @@
 class Admin::BeaconsController < ApplicationController
+  before_action :require_admin_login
   before_action :set_beacon, only: [:show, :edit, :update, :destroy]
 
   # GET /beacons

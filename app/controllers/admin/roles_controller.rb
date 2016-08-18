@@ -1,4 +1,5 @@
 class Admin::RolesController < ApplicationController
+  before_action :require_admin_login
   before_action :set_role, only: [:show, :edit, :update, :destroy]
 
   # GET /roles

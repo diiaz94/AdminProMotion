@@ -1,4 +1,5 @@
 class Admin::PromotionsController < ApplicationController
+  before_action :require_admin_login
   before_action :set_promotion, only: [:show, :edit, :update, :destroy]
 
   # GET /promotions

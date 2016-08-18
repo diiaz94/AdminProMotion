@@ -1,4 +1,5 @@
 class Admin::CategoriesController < ApplicationController
+  before_action :require_admin_login
   before_action :set_category, only: [:show, :edit, :update, :destroy]
 
   # GET /categories

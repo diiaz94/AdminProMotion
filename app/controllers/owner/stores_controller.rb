@@ -1,4 +1,5 @@
 class Owner::StoresController < ApplicationController
+  before_action :require_owner_login
   before_action :set_commerce 
   before_action :set_store, only: [:show, :edit, :update, :destroy]
   before_action :set_caracas_center, only: [:new,:edit]

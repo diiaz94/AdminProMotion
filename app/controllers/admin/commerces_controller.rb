@@ -1,4 +1,5 @@
 class Admin::CommercesController < ApplicationController
+  before_action :require_admin_login
   before_action :set_commerce, only: [:show, :edit, :update, :destroy]
   # GET /commerces
   # GET /commerces.json
