@@ -70,8 +70,8 @@ $( document ).ready(function() {
 	    }
 	});
 		$.each($(".money"), function( index, value ) {
-  			$(value).text(formato_numero($(value).text(), 2, ',', '.'))
-  			$(value).val(enmask($(value).val().replaceAll(".","")))
+  			$(value).text(formato_numero($(value).text(), 2, ',', '.',true))
+  			$(value).val(formato_numero($(value).text(), 2, ',', '.',false))
 		});
         //$(".monto").text(formato_numero($(".monto").text(), 2, ',', '.'));
 
@@ -180,7 +180,7 @@ function graficoTortaInit(products_of_deposits,products_of_stores){
 }
 
 
-function formato_numero(numero, decimales, separador_decimal, separador_miles){ 
+function formato_numero(numero, decimales, separador_decimal, separador_miles,bsLit){ 
     numero=parseFloat(numero);
     if(isNaN(numero)){
         return "";
@@ -201,7 +201,7 @@ function formato_numero(numero, decimales, separador_decimal, separador_miles){
             numero=numero.replace(miles, "$1" + separador_miles + "$2");
         }
     }
-    return numero+" Bs.";
+    return numero+(typeof(bsLit)!="undefined"&&bsLit==true?" Bs.":"");
     //Implementación formato_numero(numeroAFormatear, 2, ',', '.');
 }
 
