@@ -224,7 +224,6 @@ function unmask(v){
 return v.replaceAll(".","").replaceAll(",","");
 }
 function enmask(mask){
-	mask=mask.indexOf(".")==-1?mask+"0":mask;
 	var result=unmask(mask)
 	if (result.length>2) {
 		result=result.insert(result.length-2, ",");
