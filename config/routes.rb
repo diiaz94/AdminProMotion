@@ -38,6 +38,7 @@ Rails.application.routes.draw do
     resources :stores
     resources :promotions
     resources :beacons
+    resources :categories    
   end
 
   get 'my_profile' => 'users#my_profile', as: :my_profile
