@@ -9,10 +9,11 @@ json.about store.description
 json.registered store.created_at
 json.extract! store, :latitude,:longitude
 
+
 json.promotions do
-	json.partial! '/api/promotions/promotions',  promotions: store.promotions
+	json.partial! '/api/promotions/promotion',  collection: store.promotions, as: :promotion
 end
 
 json.beaconInfo do
-	json.partial! '/api/beacons/beacons',  beacons: store.beacons
+	json.partial! '/api/beacons/beacon',  collection: store.beacons, as: :beacon
 end
