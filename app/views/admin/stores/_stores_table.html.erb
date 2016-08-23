@@ -167,6 +167,8 @@
                                                         </li>
                                                       <%end%>
                                                     </ul>
+                                                    <button type="button" class="btn btn-default btn-xs" onclick="window.location.href=
+                                    '<%=admin_promotions_path%>'">Ver todas</button>
                                                     <%else%>
                                                         <div>Aun no existen promociones asociadas a esta tienda</div>
                                                     <%end%>
@@ -175,10 +177,10 @@
                                               </div>
                                             </div>
                                           </div>
-                                          <button data-url=<%=admin_store_path(store)%> data-model="store" data-model-description="Tienda"  type="button" class="btn <%= store.active ? "btn-warning" : "btn-success"%> change_status"><%= store.active ? "Desactivar" : "Activar"%></button>
                                         </div>
                                         <!-- /.box-body -->
                                       </div>
+                                          <button data-url=<%=admin_store_path(store)%> data-model="store" data-model-description="Tienda"  type="button" class="btn <%= store.active ? "btn-warning" : "btn-success"%> change_status"><%= store.active ? "Desactivar" : "Activar"%></button>
                                       <!-- /.box -->
                                     </div>
                                     <!-- /.col -->

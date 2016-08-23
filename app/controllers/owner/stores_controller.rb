@@ -42,7 +42,7 @@ class Owner::StoresController < ApplicationController
     @store.commerce = @commerce  
     respond_to do |format|
       if @store.save
-        format.html { redirect_to owner_commerce_stores_path(@commerce), notice: 'Tienda creada exitosamente.' }
+        format.html { redirect_to owner_commerce_store_path(@commerce,@store), notice: 'Tienda creada exitosamente.' }
         format.json { render :show, status: :created, location: @store }
       else
         format.html { render :new }
@@ -65,7 +65,7 @@ class Owner::StoresController < ApplicationController
     respond_to do |format|
       @store.slug=nil
       if @store.update(store_params)
-        format.html { redirect_to owner_commerce_stores_path(@commerce), notice: 'Tienda actualizada exitosamente.' }
+        format.html { redirect_to owner_commerce_store_path(@commerce,@store), notice: 'Tienda actualizada exitosamente.' }
         msg = { :status => "ok", :message => "Success!", :store => @store }
         format.json  { render :json => msg } # don't do msg.to_json
       else
