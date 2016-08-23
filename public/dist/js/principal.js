@@ -71,7 +71,7 @@ $( document ).ready(function() {
 	});
 		$.each($(".money"), function( index, value ) {
   			$(value).text(formato_numero($(value).text(), 2, ',', '.',true))
-  			$(value).val(formato_numero($(value).text(), 2, ',', '.',false))
+  			$(value).val(formato_numero($(value).val(), 2, ',', '.',false))
 		});
         //$(".monto").text(formato_numero($(".monto").text(), 2, ',', '.'));
 
@@ -112,6 +112,10 @@ function validarMensajes(){
 		$("#modal-success").find("#msjtxt").html(noticemsj);
 		$("#modal-success").modal("show");
 		setTimeout(function(){ $("#modal-success").modal("hide")}, 1500);
+	}
+	if(typeof(warningmsj)!="undefined" && warningmsj.trim()!=""){
+		$("#modal-warning").find("#msjtxt").html(warningmsj);
+		$("#modal-warning").modal("show");
 	}
 }
 
@@ -251,7 +255,12 @@ var lng_selected="";
 function showNoticeMessage(mjs){
 	noticemsj=mjs;
 	validarMensajes();
-}function showErrorMessage(mjs){
+}
+function showWarningMessage(mjs){
+	warningmsj=mjs;
+	validarMensajes();
+}
+function showErrorMessage(mjs){
 	alertmsj=mjs;
 	validarMensajes();
 }
@@ -276,8 +285,19 @@ function change_status(event){
 	    showNoticeMessage(model_description+" "+(element.text()=="Activar"?"activada":"desactivada")+" exitosamente");
 	    location.reload();
 	  }).error(function(data){
-				console.log(data.responseText);
-				showErrorMessage("Lo sentimos, no pudimos "+element.text()+" la "+model_description.toLowerCase());
+	  			console.log(data.responseText);
+	  			try{
+	  				var error=JSON.parse(data.responseText);
+	  				if(typeof(error.message)!="undefined")
+	  					showWarningMessage(error.message[0])
+	  				else
+	  					showErrorMessage("Lo sentimos, no pudimos "+element.text()+" la "+model_description.toLowerCase());
+	  			}catch(e){
+					showErrorMessage("Lo sentimos, no pudimos "+element.text()+" la "+model_description.toLowerCase());
+
+	  			}
+
+				if (data.responseText) {}
 			}).always(function() {
 	   		$("#modal-loader").modal("hide");
 	  });

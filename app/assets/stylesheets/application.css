@@ -127,3 +127,8 @@ a:hover {
   max-width: 350px;
   width: 100%;
 }
+
+.change_status{
+  margin-left: 10px!important;
+  margin-bottom: 10px!important;
+}

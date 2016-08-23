@@ -13,6 +13,8 @@ class UbicationValidator < ActiveModel::Validator
   end
 end
 
+
+
 class Store < ActiveRecord::Base
 	belongs_to :category
 	belongs_to :commerce
@@ -28,6 +30,7 @@ class Store < ActiveRecord::Base
 	validates :category_id, :presence => {:message => "Debe indicar la Categoría"}
 	validates :commerce_id, :presence => {:message => "Debe indicar el Comercio"}
 	validates_with UbicationValidator, fields: [:latitude,:longitude]
+
 
 	def init
 		self.picture  ||= "/photo_store/default_store.png"

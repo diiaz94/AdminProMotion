@@ -133,7 +133,9 @@
                                                 <div class="panel panel-default">
                                                 <!-- Default panel contents -->
                                             
-                                                  <div class="panel-heading">Últimas 5 Promociones</div>
+                                                  <div class="panel-heading">Últimas 5 Promociones&nbsp;
+                                                  <button type="button" class="btn btn-primary btn-xs" onclick="window.location.href=
+                                    '<%=new_owner_commerce_store_promotion_path(@commerce,store) %>'">Agregar promoción</button></div>
                                                   <div class="panel-body">
                                                   <!-- List group -->
                                                   <%if store.promotions.size>0 %>
@@ -167,6 +169,8 @@
                                                         </li>
                                                       <%end%>
                                                     </ul>
+                                                    <button type="button" class="btn btn-default btn-xs" onclick="window.location.href=
+                                    '<%=owner_commerce_store_promotions_path(@commerce,store) %>'">Ver todas</button></div>
                                                     <%else%>
                                                         <div>Aun no existen promociones asociadas a esta tienda</div>
                                                     <%end%>
@@ -175,11 +179,11 @@
                                               </div>
                                             </div>
                                           </div>
-                                          <button data-url=<%=owner_commerce_store_path(@commerce,store)%> data-model="store" data-model-description="Tienda"  type="button" class="btn <%= store.active ? "btn-warning" : "btn-success"%> change_status"><%= store.active ? "Desactivar" : "Activar"%></button>
                                         </div>
                                         <!-- /.box-body -->
                                       </div>
                                       <!-- /.box -->
+                                          <button data-url=<%=owner_commerce_store_path(@commerce,store)%> data-model="store" data-model-description="Tienda"  type="button" class="btn <%= store.active ? "btn-warning" : "btn-success"%> change_status"><%= store.active ? "Desactivar" : "Activar"%></button>
                                     </div>
                                     <!-- /.col -->
                                   </div>
