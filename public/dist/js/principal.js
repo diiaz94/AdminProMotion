@@ -283,7 +283,7 @@ function change_status(event){
 	}).done(function( data ) {
 		console.log(data)
 	    showNoticeMessage(model_description+" "+(element.text()=="Activar"?"activada":"desactivada")+" exitosamente");
-	    location.reload();
+	    setTimeout(function(){location.reload();},1000);
 	  }).error(function(data){
 	  			console.log(data.responseText);
 	  			try{
@@ -341,6 +341,9 @@ function submitForm(m){
 			getAddress(lat_selected,lng_selected,getUrlImage);
 		};
 		if (form_model=="promotion") {
+			getUrlImage();
+		};
+		if (form_model=="beacon") {
 			getUrlImage();
 		};
 }

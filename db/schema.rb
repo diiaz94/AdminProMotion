@@ -17,10 +17,12 @@ ActiveRecord::Schema.define(version: 20160810203928) do
   enable_extension "plpgsql"
 
   create_table "beacons", force: :cascade do |t|
+    t.string   "name"
     t.string   "uuid"
     t.string   "major"
     t.string   "minor"
     t.string   "slug"
+    t.string   "picture"
     t.integer  "store_id"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false

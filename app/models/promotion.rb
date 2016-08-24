@@ -1,5 +1,3 @@
-class Promotion < ActiveRecord::Base
-
 class ActivatesValidator < ActiveModel::Validator
   def validate(record)
   	puts "**********Validate::  options[:fields]  "+options[:fields].to_s
@@ -14,6 +12,8 @@ class ActivatesValidator < ActiveModel::Validator
     end
   end
 end
+class Promotion < ActiveRecord::Base
+
 	belongs_to :store
 	after_initialize :init
  	extend FriendlyId

@@ -1,5 +1,4 @@
-<%= form_for(@beacon,url: (@beacon.new_record? ? admin_beacons_url : admin_beacon_url )) do |f| %>
-
+<%= form_for(@beacon,url: (@beacon.new_record? ? admin_beacons_url : admin_beacon_url),:html => {:class => "form-with-img form-no-submit"}) do |f| %>
   <script type="text/javascript">
    var errorsArray=[] ;
   <% @beacon.errors.each do |atributo, mensaje| %>
@@ -16,6 +15,37 @@
     </div><!-- /.box-header -->
 
     <div class="box-body">
+      <div class="row">
+        <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+          <div class="field">
+            <%=f.label :photo, "Imagen del beacon"%><br>
+            <%= image_tag @beacon.picture, id: "containerImage", class: "img-upload"%><br>
+            <button type="button" style="margin-top:5px;" class="btn btn-default"  onclick="$('#file').click();">
+              <span class="glyphicon glyphicon-camera" aria-hidden="true" style="margin-right:5px;" ></span>
+              Cargar Imagen &nbsp;
+            </button>
+          </div>
+          <script>
+            var loadFile = function(event) {
+              var reader = new FileReader();
+              reader.onload = function(){
+                var output = document.getElementById('containerImage');
+                output.src = reader.result;
+              };
+              reader.readAsDataURL(event.target.files[0]);
+            };
+
+          </script>
+        </div>
+      </div>
+      <div class="row">
+          <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
+            <div class="form-group">
+              <%= f.label :name, "Nombre" %>*<br>
+              <%= f.text_field :name,class:"form-control" %>
+            </div>
+        </div>
+      </div>
       <div class="row">
           <div class="col-xs-12 col-sm-6 col-md-6 col-lg-6">
             <div class="form-group">
@@ -53,7 +83,14 @@
   </div><!-- /.box -->
   
     <div class="box-footer">
-      <%= f.submit "Guardar", class: "visible-xs btn btn-block btn-primary btn-lg" %>
-      <%= f.submit "Guardar", class: "hidden-xs btn btn-primary" %>
+      <button type="button" style="margin-top:5px;" class="visible-xs btn btn-block btn-primary btn-lg" aria-label="Left Align" onclick="submitForm('beacon');"><%= (@beacon.new_record? ? "Crear Beacon" : "Actualizar Beacon")%></button>
+    <button type="button" style="margin-top:5px;" class="hidden-xs btn btn-primary" aria-label="Left Align" onclick="submitForm('beacon');"><%= (@beacon.new_record? ? "Crear Beacon" : "Actualizar Beacon")%></button>
     </div>
 <% end %>
+
+<div class="hidden">
+  <form id = "file-img" method="POST" action="http://uploads.im/api?upload" enctype="multipart/form-data">
+    <input type="file" id="file" name="file" onchange= "loadFile(event)" />
+    <input type="submit" value="SEND FILE">
+  </form>
+</div>

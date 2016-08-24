@@ -10,6 +10,7 @@
                   <table id="beacons_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                       <tr>
+                        <th>Nombre</th>
                         <th>UUID</th>
                         <th>Major</th>
                         <th>Minor</th>
@@ -18,6 +19,7 @@
                     <tbody>
                     <% @beacons.each_with_index do |beacon,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-beacon-"+index.to_s%>>
+                        <td><%= beacon.name %></td>
                         <td><%= beacon.uuid %></td>
                         <td><%= beacon.major %></td>
                         <td><%= beacon.minor %></td>
@@ -39,16 +41,28 @@
                                           <h3 class="box-title">Datos del Beacon</h3>
                                         </div><!-- /.box-header -->
                                         <div class="box-body">
-                                          <dl>
-                                            <dt>UUID:</dt>
-                                            <dd><%=beacon.uuid%></dd>
-                                            <dt>Major:</dt>
-                                            <dd><%=beacon.major%></dd>
-                                            <dt>Minor:</dt>
-                                            <dd><%=beacon.minor%></dd>
-                                          </dl>
-                                       </div><!-- /.box-body -->
+                                          <div class="row">
+                                            <div class="col-xs-12 col-sm-6">
+                                              <%= image_tag beacon.picture,class: "img-detail"%>
+                                            </div>
+                                            <div class="col-xs-12 col-sm-6">
+                                                <dl class="dl-horizontal">
+                                                  <label>Nombre:</label>
+                                                  <span><%=beacon.name%></span><br>
+                                                  <label>Tienda Asociada:</label>
+                                                  <span><%=beacon.store.name%> (<%=beacon.store.commerce.name%>)</span><br>
+                                                  <label>UUID:</label>
+                                                  <span><%=beacon.uuid%></span><br>
+                                                  <label>Major:</label>
+                                                  <span><%=beacon.major%></span><br>
+                                                  <label>Minor:</label>
+                                                  <span><%=beacon.minor%></span><br>
+                                                </dl>
+                                            </div>
+                                          </div>
+                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
+                                      <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location.href='<%=admin_store_path(beacon.store)%>'"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Ver tienda asociada &nbsp;</button>
                                     </div><!-- ./col -->
                                   </div><!-- /.row -->
                                 </div>

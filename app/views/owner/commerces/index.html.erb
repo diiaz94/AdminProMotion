@@ -6,13 +6,12 @@
 
               <div class="box">
                 <div class="box-header">
-                  <h3 class="box-title">Lista de Comercios</h3>
+                  <h3 class="box-title">Lista de Comercios <%=current_user ? " de "+current_user.email : "" %></h3>
                 </div><!-- /.box-header -->
                 <div class="box-body">
                   <table id="commerces_table" class="display table table-bordered table-striped" cellspacing="0" width="100%">
                     <thead>
                       <tr>
-                        <th>Dueño</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                       </tr>
@@ -20,7 +19,6 @@
                     <tbody>
                     <% @commerces.each_with_index do |commerce,index| %>
                       <tr class="link" data-toggle="modal" data-target=<%="#modal-commerce-"+index.to_s%>>
-                        <td><%= commerce.user.profile.short_name %></td>                        
                         <td><%= commerce.name %></td>
                         <td><%= commerce.description %></td>
                       </tr>
@@ -42,8 +40,6 @@
                                         </div><!-- /.box-header -->
                                         <div class="box-body">
                                           <dl>
-                                            <dt>Dueño:</dt>
-                                            <dd><%=commerce.user.profile.complete_name%></dd>
                                             <dt>Nombre:</dt>
                                             <dd><%=commerce.name%></dd>
                                             <dt>Cantidad de tiendas:</dt>
@@ -54,6 +50,8 @@
                                           </dl>
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
+                                      <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location.href='<%=owner_commerce_stores_path(commerce)%>'"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Ver tiendas &nbsp;
+                                  </button>
                                     </div><!-- ./col -->
                                   </div><!-- /.row -->
                                 </div>
@@ -73,7 +71,6 @@
                     </tbody>
                     <tfoot>
                       <tr>
-                        <th>Dueño</th>
                         <th>Nombre</th>
                         <th>Descripción</th>
                       </tr>
