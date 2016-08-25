@@ -1,8 +1,10 @@
 class ActivatesValidator < ActiveModel::Validator
   def validate(record)
+  	puts "***"+record.send(options[:fields][0]).to_s
   	if record.send(options[:fields][0])==true
     	puts "OK active"
-    	if Promotion.find(record.send(options[:fields][1])).store.promotions.where(active: "true").size>0
+    	array = Store.find(record.send(options[:fields][1])).promotions.where("active =? AND id!=?","true",record.send(options[:fields][2]))
+    	if array.size>0
 	      record.errors[:message] = "Esta tienda ya posee una promoción activa"
     		
     	end
@@ -19,7 +21,7 @@ class Promotion < ActiveRecord::Base
 	validates :until, :presence => {:message => "El campo Caducidad no puede estar vacío"}
 	validates :price, :presence => {:message => "El campo Precio no puede estar vacío"}
 	validates :store_id, :presence => {:message => "Debe indicar la Tienda"}
-	validates_with ActivatesValidator, fields: [:active,:id]
+	validates_with ActivatesValidator, fields: [:active,:store_id,:id]
 
 	def init
 		self.picture  ||= "/photo_store/default_promotion.png"
