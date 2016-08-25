@@ -1,6 +1,6 @@
 class BeaconValidator < ActiveModel::Validator
   def validate(record)
-  	if Beacon.where(uuid: record.send(options[:fields][0]),major record.send(options[:fields][1]),minor: record.send(options[:fields][2])).size>0
+  	if Beacon.where("uuid =? AND major=? AND minor=?", record.send(options[:fields][0]),record.send(options[:fields][1]),record.send(options[:fields][2])).size>0
 	    record.errors[:base] << "Ya existe un beacon registrado con estos valores, intente con otros valores"
     end
   end
