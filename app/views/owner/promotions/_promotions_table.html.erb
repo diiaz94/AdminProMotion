@@ -49,6 +49,8 @@
                                               <dl class="dl-horizontal">
                                                 <label>Codigo:</label>
                                                 <span><%=promotion.id%></span><br>
+                                                <label>Tienda Asociada:</label>
+                                                <span><%=promotion.store.name%> (<%=promotion.store.commerce.name%>)</span><br>
                                                 <label>Título:</label>
                                                 <span><%=promotion.title%></span><br>
                                                 <label>Precio:</label>
@@ -69,6 +71,7 @@
                                         <button data-url=<%=owner_commerce_store_promotion_path(@commerce,@store,promotion)%> data-model="promotion" data-model-description="Promoción"  type="button" class="btn <%= promotion.active ? "btn-warning" : "btn-success"%> change_status"><%= promotion.active ? "Desactivar" : "Activar"%></button>
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
+                                      <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location.href='<%=owner_commerce_store_path(promotion.store.commerce,promotion.store)%>'"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Ver tienda asociada &nbsp;</button>
                                     </div><!-- ./col -->
                                   </div><!-- /.row -->
                                 </div>

@@ -69,6 +69,7 @@
                                         <button data-url=<%=admin_promotion_path(promotion)%> data-model="promotion" data-model-description="Promoción"  type="button" class="btn <%= promotion.active ? "btn-warning" : "btn-success"%> change_status"><%= promotion.active ? "Desactivar" : "Activar"%></button>
                                        </div><!-- /.box-body -->
                                       </div><!-- /.box -->
+                                      <button type="button" class="btn btn-primary" aria-label="Left Align" onclick="window.location.href='<%=admin_store_path(promotion.store)%>'"><span class="glyphicon glyphicon-shopping-cart" aria-hidden="true"></span> Ver tienda asociada &nbsp;</button>
                                     </div><!-- ./col -->
                                   </div><!-- /.row -->
                                 </div>

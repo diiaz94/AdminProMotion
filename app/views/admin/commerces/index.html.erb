@@ -19,13 +19,13 @@
                     </thead>
                     <tbody>
                     <% @commerces.each_with_index do |commerce,index| %>
-                      <tr class="link" data-toggle="modal" data-target=<%="#modal-commerce-"+index.to_s%>>
+                      <tr class="link" data-toggle="modal" data-target=<%="#modal-commerce-"+commerce.id.to_s%>>
                         <td><%= commerce.user.profile.short_name %></td>                        
                         <td><%= commerce.name %></td>
                         <td><%= commerce.description %></td>
                       </tr>
                         <div class="example-modal">
-                          <div class="modal fade" id=<%="modal-commerce-"+index.to_s%>>
+                          <div class="modal fade detail-commerce" id=<%="modal-commerce-"+commerce.id.to_s%>>
                             <div class="modal-dialog">
                               <div class="modal-content">
                                 <div class="modal-header">
@@ -100,6 +100,25 @@
           } ],
           stateSave: true
         });
+        var commerce_id = "<%=@commerce!=nil ? @commerce.id.to_s : nil%>"
+        if (commerce_id.trim().length>0) {
+          $("#modal-commerce-"+commerce_id).modal("show")
+        }
+        var current_state={target:null};
+        window.onpopstate = function(e){
+           if(e.state){
+                if(e.state.target && current_state.target!=e.state.target){
+                  current_state=e.state;
+                  $.each($(".detail-commerce"), function( index, element ) {
+                    $(element).modal("hide");
+                  });
+                  $.each($(".modal-backdrop"), function( index, element ) {
+                    $(element).remove()
+                  });
+                  setTimeout(function(){$(e.state.target).modal("show");},0)
+                }                
+            }
+        };
       });
 </script>
 <br>
