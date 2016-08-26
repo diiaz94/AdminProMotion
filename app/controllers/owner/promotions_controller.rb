@@ -33,7 +33,7 @@ class Owner::PromotionsController < ApplicationController
     @promotion.store=@store
     respond_to do |format|
       if @promotion.save
-        format.html { redirect_to owner_commerce_store_promotions_path, notice: 'Promoción creada exitosamente.' }
+        format.html { redirect_to owner_commerce_store_promotion_path(@store.commerce,@store,@promotion), notice: 'Promoción creada exitosamente.' }
         format.json { render :show, status: :created, location: @promotion }
       else
         format.html { render :new }
@@ -48,7 +48,7 @@ class Owner::PromotionsController < ApplicationController
     respond_to do |format|
       @promotion.slug=nil
       if @promotion.update(promotion_params)
-        format.html { redirect_to owner_commerce_store_promotions_path, notice: 'Promoción actualizada exitosamente.' }
+        format.html { redirect_to owner_commerce_store_promotion_path(@store.commerce,@store,@promotion), notice: 'Promoción actualizada exitosamente.' }
         msg = { :status => "ok", :message => "Success!", :promotion => @promotion }
         format.json  { render :json => msg } # don't do msg.to_json
       else
