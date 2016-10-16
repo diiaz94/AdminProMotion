@@ -1,0 +1,1 @@
+json.array! commerces, partial: 'api/commerces/commerce', as: :commerce

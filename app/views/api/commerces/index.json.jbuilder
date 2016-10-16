@@ -1,0 +1,1 @@
+json.partial! '/api/commerces/commerce', collection: @commerces, as: :commerce
