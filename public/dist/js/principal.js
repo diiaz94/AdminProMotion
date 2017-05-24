@@ -205,7 +205,7 @@ function formato_numero(numero, decimales, separador_decimal, separador_miles,bs
             numero=numero.replace(miles, "$1" + separador_miles + "$2");
         }
     }
-    return numero+(typeof(bsLit)!="undefined"&&bsLit==true?" Bs.":"");
+    return numero+(typeof(bsLit)!="undefined"&&bsLit==true?" $":"");
     //Implementación formato_numero(numeroAFormatear, 2, ',', '.');
 }
 
